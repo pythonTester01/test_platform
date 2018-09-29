@@ -37,6 +37,7 @@ def project_manage(request):
 
 
 #退出登录
+@login_required
 def logout1(request):
     #自动清除session
     logout(request)
