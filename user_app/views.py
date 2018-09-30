@@ -48,6 +48,7 @@ def logout1(request):
 def project_model(request):
     return render(request, "project_model_add.html")
 
+#项目管理-添加
 @login_required
 def project_model_add(request,*args,**kwargs):
     print("====")
@@ -57,16 +58,22 @@ def project_model_add(request,*args,**kwargs):
     projectTable.objects.create(title=title, a=a, b=b)
     return HttpResponseRedirect('/project_manage/')
 
+#项目管理-删除（根据id删除）
+@login_required
 def project_del(request):
     id = request.GET.get('id')
     projectTable.objects.filter(id=id).delete()
     return HttpResponseRedirect('/project_manage/')
 
+#项目管理-编辑
+@login_required
 def project_edit(request):
     id = request.GET.get('id')
     project_data = projectTable.objects.filter(id = id).first()
     return render(request, "project_model_edit.html", {"project_data":project_data})
 
+#项目管理-更新
+@login_required
 def project_update(request):
     if request.method == "POST":
         id = request.POST.get('id')
