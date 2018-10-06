@@ -4,8 +4,8 @@ jQuery(document).ready(function() {
     /*
         Fullscreen background
     */
-    $.backstretch("/static/assets/img/backgrounds/1.jpg");
-    
+    $.backstretch("F:/PyProject/test_platform/static/assets/img/backgrounds/1.jpg");
+	//F:\PyProject\test_platform\static\assets\img\backgrounds\1.jpg
     /*
         Form validation
     */

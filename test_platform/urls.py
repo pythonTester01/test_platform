@@ -29,4 +29,5 @@ urlpatterns = [
     path("project_del/", views.project_del),
     path("project_edit/", views.project_edit),
     path("project_update/", views.project_update),
+    path("project_search/", views.project_search),
 ]

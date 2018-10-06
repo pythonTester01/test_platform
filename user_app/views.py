@@ -1,10 +1,22 @@
-from django.shortcuts import render,redirect,HttpResponse
+from django.shortcuts import render,redirect,HttpResponse,render_to_response
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from user_app.models import projectTable
-
+from django.db.models import Q
+import json
+from datetime import datetime,date
 # Create your views here.
+
+class CJsonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime):
+            return obj.strftime('%Y-%m-%d %H:%M:%S')
+        elif isinstance(obj, date):
+            return obj.strftime('%Y-%m-%d')
+        else:
+            return json.JSONEncoder.default(self, obj)
+
 
 #登录首页
 def index(request):
@@ -75,13 +87,28 @@ def project_edit(request):
 #项目管理-更新
 @login_required
 def project_update(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         id = request.POST.get('id')
         title = request.POST.get('title')
         a = request.POST.get('a')
         b = request.POST.get('b')
         projectTable.objects.filter(id=id).update(title=title, a=a, b=b)
         return HttpResponseRedirect('/project_manage/')
+
+#项目管理-搜索
+@login_required
+def project_search(request):
+    username = request.session.get('user1', '')
+    content = request.POST.get('search_project')
+    print(content)
+    #content="11"
+    project_data = projectTable.objects.filter(
+                title__contains=content)
+
+    return render(request, "project_manage.html", {"username":username,"project_data": project_data})
+
+
+
 
 
 
