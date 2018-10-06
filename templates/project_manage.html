@@ -6,8 +6,8 @@
         <!-- Bootstrap -->
         <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="/static/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
-        <link href="/static/assets/styles.css" rel="stylesheet" media="screen">
-        <link href="/static/assets/DT_bootstrap.css" rel="stylesheet" media="screen">
+        <link href="/static/assets/css/styles.css" rel="stylesheet" media="screen">
+        <link href="/static/assets/css/DT_bootstrap.css" rel="stylesheet" media="screen">
         <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="vendors/flot/excanvas.min.js"></script><![endif]-->
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
         <!--[if lt IE 9]>
@@ -193,12 +193,13 @@
                                          <a href="/project_model/"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
                                       </div>
                                       <div class="btn-group pull-right">
-                                         <button data-toggle="dropdown" class="btn dropdown-toggle">Tools <span class="caret"></span></button>
-                                         <ul class="dropdown-menu">
-                                            <li><a href="#">Print</a></li>
-                                            <li><a href="#">Save as PDF</a></li>
-                                            <li><a href="#">Export to Excel</a></li>
-                                         </ul>
+                                         <div class="dataTables_filter" id="example_filter">
+                                             <form method="post" action="/project_search/">
+                                              <input class="btn" type="submit" value="搜索">
+                                              <label><input type="text" aria-controls="example" id="search_project" name="search_project" onkeydown="entersearch()"></label>
+
+                                             </form>
+                                        </div>
                                       </div>
                                    </div>
 
@@ -247,11 +248,28 @@
         <script src="/static/vendors/datatables/js/jquery.dataTables.min.js"></script>
 
 
-        <script src="/static/assets/scripts.js"></script>
-        <script src="/static/assets/DT_bootstrap.js"></script>
+        <script src="/static/assets/js/scripts.js"></script>
+        <script src="/static/assets/js/DT_bootstrap.js"></script>
         <script>
-        $(function() {
-        }
+             function entersearch(){
+                    //alert(11);
+                    search_data = $("#search_project").val();
+                    //alert(data);
+                    var event = window.event || arguments.callee.caller.arguments[0];
+                    if (event.keyCode == 13) {
+                        $.ajax({
+                            type: 'POST',
+                            url: '/project_search/',
+                            data: {"search_data":search_data},
+                            //async : false,
+                            //dataType: 'json',
+
+                            success:function(data){
+
+                            }
+                        })
+                    }
+             }
         </script>
     </body>
 
