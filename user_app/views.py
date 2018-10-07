@@ -118,16 +118,16 @@ def project_update(request):
         return HttpResponseRedirect('/project_manage/')
 
 #项目管理-搜索
-@login_required
-def project_search(request):
-    username = request.session.get('user1', '')
-    content = request.POST.get('search_project')
-    print(content)
-    #content="11"
-    project_data = projectTable.objects.filter(
-                title__contains=content)
-
-    return render(request, "project_manage.html", {"username":username,"project_data": project_data})
+# @login_required
+# def project_search(request):
+#     username = request.session.get('user1', '')
+#     content = request.POST.get('search_project')
+#     print(content)
+#     #content="11"
+#     project_data = projectTable.objects.filter(
+#                 title__contains=content)
+#
+#     return render(request, "project_manage.html", {"username":username,"project_data": project_data})
 
 
 
