@@ -194,9 +194,9 @@
                                       </div>
                                       <div class="btn-group pull-right">
                                          <div class="dataTables_filter" id="example_filter">
-                                             <form method="post" action="/project_search/">
+                                             <form method="post" action="/project_manage/">
                                               <input class="btn" type="submit" value="搜索">
-                                              <label><input type="text" aria-controls="example" id="search_project" name="search_project" onkeydown="entersearch()"></label>
+                                              <label><input type="text" aria-controls="example" id="search_project" name="search_project"></label>
 
                                              </form>
                                         </div>
@@ -221,14 +221,19 @@
                                                 <td>{{data.a}}</td>
                                                 <td class="center">{{data.b}}</td>
                                                 <td class="center" style="width: 60px;">
-                                                    <a href="/project_del/?id={{ data.id }}"><i class="icon-remove"></i></a>
+                                                    <a onclick="del_id()"><i class="icon-remove"><input type="hidden" id="del_id" value={{ data.id }}></i></a>
                                                     &nbsp;&nbsp;&nbsp;
-                                                    <a href="/project_edit/?id={{ data.id }}"><i class="icon-pencil"></i></a>
+                                                    <a href="/project_model/?id={{ data.id }}"><i class="icon-pencil"></i></a>
                                                 </td>
                                             </tr>
                                         {% endfor %}
                                         </tbody>
                                     </table>
+                                </div>
+                                <div id="pageslist" class="dataTables_paginate paging_bootstrap pagination">
+                                    <ul>
+                                        {{ page }}
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -251,25 +256,31 @@
         <script src="/static/assets/js/scripts.js"></script>
         <script src="/static/assets/js/DT_bootstrap.js"></script>
         <script>
-             function entersearch(){
+             function del_id(){
                     //alert(11);
-                    search_data = $("#search_project").val();
-                    //alert(data);
-                    var event = window.event || arguments.callee.caller.arguments[0];
-                    if (event.keyCode == 13) {
-                        $.ajax({
-                            type: 'POST',
-                            url: '/project_search/',
-                            data: {"search_data":search_data},
-                            //async : false,
-                            //dataType: 'json',
+                    id = $("#del_id").val();
+                    //alert(id);
 
-                            success:function(data){
+                    $.ajax({
+                        type: 'POST',
+                        url: '/project_del/',
+                        data: {"id":id},
+                        //async : false,
+                        //dataType: 'json',
 
+                        success:function(data){
+                            if(data =="1") {
+                                alert("删除成功！");
+                                window.location.reload();
                             }
-                        })
-                    }
+                        },
+		                error:function(){
+
+		                }
+                    });
+
              }
+
         </script>
     </body>
 

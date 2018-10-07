@@ -24,10 +24,11 @@ urlpatterns = [
     path("login_action/", views.login_action),
     path("logout/", views.logout1),
     path("project_manage/", views.project_manage),
+    path(r"^project_manage/", views.project_manage),
     path("project_model/", views.project_model),
     path("project_model_add/", views.project_model_add),
     path("project_del/", views.project_del),
-    path("project_edit/", views.project_edit),
+    #path("project_edit/", views.project_edit),
     path("project_update/", views.project_update),
-    path("project_search/", views.project_search),
+    #path("project_search/", views.project_search),
 ]

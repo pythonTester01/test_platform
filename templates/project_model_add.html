@@ -191,25 +191,28 @@
                             </div>
                             <div class="block-content collapse in">
                                 <div class="span12">
-                                     <form class="form-horizontal" action="/project_model_add/" method="post">
+                                    <form class="form-horizontal" action="/project_update/" method="post">
                                       <fieldset>
                                         <legend>Form Horizontal</legend>
                                         <div class="control-group">
                                           <label class="control-label" for="focusedInput">项目名称</label>
                                           <div class="controls">
-                                            <input class="input-xlarge focused" name="title" id="focusedInput" type="text" value="This is focused...">
+                                            <input class="input-xlarge focused" name="title" id="focusedInput" type="text" value={{project_data.title}}>
+                                          </div>
+                                          <div class="controls">
+                                            <input class="input-xlarge focused" name="id"  type="hidden" value={{project_data.id}}>
                                           </div>
                                         </div>
                                         <div class="control-group">
                                           <label class="control-label">字段一</label>
                                           <div class="controls">
-                                            <input class="input-xlarge focused" name="a" id="a" type="text" value="This is focused...">
+                                            <input class="input-xlarge focused" name="a" id="a" type="text" value="{{project_data.a}}">
                                           </div>
                                         </div>
                                         <div class="control-group">
                                           <label class="control-label" for="disabledInput">字段二</label>
                                           <div class="controls">
-                                            <input class="input-xlarge focused" name="b" id="b" type="text" value="This is focused...">
+                                            <input class="input-xlarge focused" name="b" id="b" type="text" value="{{project_data.b}}">
                                           </div>
                                         </div>
                                         <div class="form-actions">
