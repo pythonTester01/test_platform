@@ -4,10 +4,11 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from user_app.models import projectTable
 from user_app import html_hepler
-import json
-from datetime import datetime,date
 # Create your views here.
 
+'''
+默认值转换为int
+'''
 def try_int(arg,default):
     try:
         arg = int(arg)
@@ -42,6 +43,9 @@ def login_action(request):
 
 @login_required #判断用户是否登录
 def project_manage(request):
+    '''
+    首页跳转，判断参数是否为空，如果为空，查询所有数据，否则查询匹配数据
+    '''
     page = request.GET.get('page')
 
     page = try_int(page, 1)
@@ -70,8 +74,12 @@ def logout1(request):
     logout(request)
     return HttpResponseRedirect("/accounts/login/")
 
+
 @login_required
 def project_model(request):
+    '''
+    判断id是否为空，如果空，跳转添加页面，否则回显数据，变为修改页面。
+    '''
     id = request.GET.get('id')
     print(id)
     if id is not None:
