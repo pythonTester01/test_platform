@@ -2,7 +2,7 @@ from django.shortcuts import render,redirect,HttpResponse,render_to_response
 from django.http import HttpResponseRedirect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from user_app.models import projectTable
+from user_app.models import Project
 from user_app import html_hepler
 # Create your views here.
 
@@ -51,15 +51,15 @@ def project_manage(request):
     page = try_int(page, 1)
 
     # all_data = models.News.objects.all()
-    count = projectTable.objects.all().count()
+    count = Project.objects.all().count()
 
     pageObj = html_hepler.PageInfo(page, count)
     content = request.POST.get('search_project')
     if content is not None:
-        project_data = projectTable.objects.filter(
+        project_data = Project.objects.filter(
                 title__contains=content)
     else:
-        project_data = projectTable.objects.all()[pageObj.start:pageObj.end]
+        project_data = Project.objects.all()[pageObj.start:pageObj.end]
 
     page_string = html_hepler.Pager(page, pageObj.all_page_count)
     username = request.session.get('user1', '')  # 读取浏览器 session
@@ -83,7 +83,7 @@ def project_model(request):
     id = request.GET.get('id')
     print(id)
     if id is not None:
-        project_data = projectTable.objects.filter(id=id).first()
+        project_data = Project.objects.filter(id=id).first()
         return render(request, "project_model_add.html",{"project_data":project_data})
     else:
         return render(request, "project_model_add.html")
@@ -95,14 +95,14 @@ def project_model_add(request,*args,**kwargs):
     title = request.POST.get('title')
     a = request.POST.get('a')
     b = request.POST.get('b')
-    projectTable.objects.create(title=title, a=a, b=b)
+    Project.objects.create(title=title, a=a, b=b)
     return HttpResponseRedirect('/project_manage/')
 
 #项目管理-删除（根据id删除）
 @login_required
 def project_del(request):
     id = request.POST.get('id')
-    projectTable.objects.filter(id=id).delete()
+    Project.objects.filter(id=id).delete()
     #return HttpResponseRedirect('/project_manage/')
     return HttpResponse('1')
 
@@ -122,7 +122,7 @@ def project_update(request):
         title = request.POST.get('title')
         a = request.POST.get('a')
         b = request.POST.get('b')
-        projectTable.objects.filter(id=id).update(title=title, a=a, b=b)
+        Project.objects.filter(id=id).update(title=title, a=a, b=b)
         return HttpResponseRedirect('/project_manage/')
 
 #项目管理-搜索

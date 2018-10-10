@@ -26,8 +26,9 @@
                     <tr>
                         <th>序号</th>
                         <th>项目名称</th>
-                        <th>a字段</th>
-                        <th>b字段</th>
+                        <th>状态</th>
+                        <th>描述</th>
+                        <th>创建时间</th>
                         <th>操作</th>
                     </tr>
                 </thead>
@@ -36,8 +37,9 @@
                     <tr class="gradeU">
                         <td>{{forloop.counter }}</td>
                         <td>{{data.title}}</td>
-                        <td>{{data.a}}</td>
-                        <td class="center">{{data.b}}</td>
+                        <td>{{data.status}}</td>
+                        <td class="center">{{data.describe}}</td>
+                        <td class="center">{{data.create_time |date:"Y-m-d H:i"}}</td>
                         <td class="center" style="width: 60px;">
                             <a onclick="del_id()"><i class="icon-remove"><input type="hidden" id="del_id" value={{ data.id }}></i></a>
                             &nbsp;&nbsp;&nbsp;
