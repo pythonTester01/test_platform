@@ -50,16 +50,19 @@ def project_manage(request):
 
     page = try_int(page, 1)
 
-    # all_data = models.News.objects.all()
     count = Project.objects.all().count()
 
     pageObj = html_hepler.PageInfo(page, count)
+
     content = request.POST.get('search_project')
+
     if content is not None:
         project_data = Project.objects.filter(
                 title__contains=content)
     else:
-        project_data = Project.objects.all()[pageObj.start:pageObj.end]
+        project_data = Project.objects.all()
+
+    #project_data = Project.objects.all()[pageObj.start:pageObj.end]
 
     page_string = html_hepler.Pager(page, pageObj.all_page_count)
     username = request.session.get('user1', '')  # 读取浏览器 session
@@ -84,18 +87,21 @@ def project_model(request):
     print(id)
     if id is not None:
         project_data = Project.objects.filter(id=id).first()
-        return render(request, "project_model_add.html",{"project_data":project_data})
+        return render(request, "project_model_edit.html",{"project_data":project_data})
     else:
         return render(request, "project_model_add.html")
 
 #项目管理-添加
 @login_required
-def project_model_add(request,*args,**kwargs):
-    print("====")
+def project_model_add(request):
     title = request.POST.get('title')
-    a = request.POST.get('a')
-    b = request.POST.get('b')
-    Project.objects.create(title=title, a=a, b=b)
+    describe = request.POST.get('describe')
+    create_time = request.POST.get('create_time')
+    status = request.POST.get('status')
+    if status == "1":
+        status = True
+    print(title,describe,create_time,status)
+    Project.objects.create(title=title, describe=describe, create_time=create_time,status=status)
     return HttpResponseRedirect('/project_manage/')
 
 #项目管理-删除（根据id删除）
@@ -120,9 +126,12 @@ def project_update(request):
     if request.method == 'POST':
         id = request.POST.get('id')
         title = request.POST.get('title')
-        a = request.POST.get('a')
-        b = request.POST.get('b')
-        Project.objects.filter(id=id).update(title=title, a=a, b=b)
+        describe = request.POST.get('describe')
+        create_time = request.POST.get('create_time')
+        status = request.POST.get('status')
+        if status == "1":
+            status = True
+        Project.objects.filter(id=id).update(title=title, describe=describe, create_time=create_time,status=status)
         return HttpResponseRedirect('/project_manage/')
 
 #项目管理-搜索
