@@ -100,6 +100,8 @@ def project_model_add(request):
     status = request.POST.get('status')
     if status == "1":
         status = True
+    else:
+        status = False
     print(title,describe,create_time,status)
     Project.objects.create(title=title, describe=describe, create_time=create_time,status=status)
     return HttpResponseRedirect('/project_manage/')
@@ -129,8 +131,11 @@ def project_update(request):
         describe = request.POST.get('describe')
         create_time = request.POST.get('create_time')
         status = request.POST.get('status')
+        print(status)
         if status == "1":
             status = True
+        else:
+            status = False
         Project.objects.filter(id=id).update(title=title, describe=describe, create_time=create_time,status=status)
         return HttpResponseRedirect('/project_manage/')
 
