@@ -117,33 +117,6 @@
 
         <script src="/static/assets/js/scripts.js"></script>
         <script src="/static/assets/js/DT_bootstrap.js"></script>
-        <script>
-             function del_id(){
-                    //alert(11);
-                    id = $("#del_id").val();
-                    alert(id);
-
-                    $.ajax({
-                        type: 'POST',
-                        url: '/project_del/',
-                        data: {"id":id},
-                        //async : false,
-                        //dataType: 'json',
-
-                        success:function(data){
-                            if(data =="1") {
-                                alert("删除成功！");
-                                window.location.reload();
-                            }
-                        },
-		                error:function(){
-
-		                }
-                    });
-
-             }
-
-        </script>
     </body>
 
 </html>

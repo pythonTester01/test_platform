@@ -40,7 +40,7 @@
                         <td class="center">{{data.describe}}</td>
                         <td class="center">{{data.create_time |date:"Y-m-d H:i"}}</td>
                         <td class="center" style="width: 60px;">
-                            <a onclick="del_id()"><i class="icon-remove"><input type="hidden" id="del_id" value={{ data.id }}></i></a>
+                            <a onclick="del_id('{{ data.id }}')"><i class="icon-remove"></i></a>
                             &nbsp;&nbsp;&nbsp;
                             <a href="/project_model/?id={{ data.id }}"><i class="icon-pencil"></i></a>
                         </td>
@@ -56,4 +56,31 @@
         </div>
     </div>
  </div>
+<script src="/static/vendors/jquery-1.9.1.js"></script>
+<script>
+             function del_id(id){
+                    //alert(11);
+                    //id1 = $("#del_id").val();
+                    //alert(id1);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/project_del/',
+                        data: {"id":id},
+                        //async : false,
+                        //dataType: 'json',
+
+                        success:function(data){
+                            if(data =="1") {
+                                alert("删除成功！");
+                                window.location.reload();
+                            }
+                        },
+		                error:function(){
+
+		                }
+                    });
+
+             }
+
+        </script>
     {% endblock context %}
