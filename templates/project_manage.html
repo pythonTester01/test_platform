@@ -1,5 +1,6 @@
 {% extends "common/nav.html" %}
     {% block context %}
+{% if type == 'list'%}
  <div class="block">
     <div class="navbar navbar-inner block-header">
         <div class="muted pull-left">Bootstrap dataTables with Toolbar</div>
@@ -56,6 +57,101 @@
         </div>
     </div>
  </div>
+ {% endif %}
+{% if type == "add" %}
+<div class="block">
+    <div class="navbar navbar-inner block-header">
+        <div class="muted pull-left">添加项目</div>
+    </div>
+    <div class="block-content collapse in">
+        <div class="span12">
+            <form class="form-horizontal" action="/manage/project_model_add/" method="post">
+              <fieldset>
+                <legend>Form Horizontal</legend>
+                <div class="control-group">
+                  <label class="control-label" for="focusedInput">项目名称</label>
+                  <div class="controls">
+                    <input class="input-xlarge focused" name="title" id="focusedInput" type="text" value={{project_data.title}}>
+                  </div>
+                  <div class="controls">
+                    <input class="input-xlarge focused" name="id"  type="hidden" value={{project_data.id}}>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">描述</label>
+                  <div class="controls">
+                    <input class="input-xlarge focused" name="describe" id="describe" type="text" value="{{project_data.describe}}">
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">创建时间</label>
+                  <div class="controls">
+                    <input type="text" class="input-xlarge datepicker" name="create_time" id="create_time" value="{{project_data.create_time |date:'Y-m-d H:i'}}">
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">状态</label>
+                  <div class="controls">
+                    <input class="input-xlarge focused" name="status" id="status" type="checkbox" value="1" checked="checked">
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">保存</button>
+                  <button type="reset" class="btn">取消</button>
+                </div>
+              </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+ {% endif %}
+{% if type == "edit" %}
+<div class="block">
+    <div class="navbar navbar-inner block-header">
+        <div class="muted pull-left">添加项目</div>
+    </div>
+    <div class="block-content collapse in">
+        <div class="span12">
+            <form class="form-horizontal" action="/manage/project_model_update/" method="post">
+              <fieldset>
+                <legend>Form Horizontal</legend>
+                <div class="control-group">
+                  <label class="control-label" for="focusedInput">项目名称</label>
+                  <div class="controls">
+                    <input class="input-xlarge focused" name="title" type="text" value={{project_data.title}}>
+                  </div>
+                  <div class="controls">
+                    <input class="input-xlarge focused" name="id"  type="hidden" value={{project_data.id}}>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">描述</label>
+                  <div class="controls">
+                    <input class="input-xlarge focused" name="describe"  type="text" value="{{project_data.describe}}">
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">创建时间</label>
+                  <div class="controls">
+                    <input type="text" class="input-xlarge datepicker" name="create_time"  value="{{project_data.create_time |date:'Y-m-d H:i'}}">
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label" >状态</label>
+                  <div class="controls">
+                        <input class="input-xlarge focused" name="status" type="checkbox" value="1" checked="checked">
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">保存</button>
+                  <button type="reset" class="btn">取消</button>
+                </div>
+              </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+ {% endif %}
 <script src="/static/vendors/jquery-1.9.1.js"></script>
 <script>
              function del_id(id){
@@ -64,7 +160,7 @@
                     //alert(id1);
                     $.ajax({
                         type: 'POST',
-                        url: '/manage/project_del/',
+                        url: '/manage/project_model_del/',
                         data: {"id":id},
                         //async : false,
                         //dataType: 'json',

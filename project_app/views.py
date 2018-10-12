@@ -1,6 +1,5 @@
 from django.shortcuts import render,redirect,HttpResponse,render_to_response
 from django.http import HttpResponseRedirect
-from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from project_app.models import Project
 from user_app import html_hepler
@@ -42,7 +41,7 @@ def project_manage(request):
     page_string = html_hepler.Pager(page, pageObj.all_page_count)
     username = request.session.get('user1', '')  # 读取浏览器 session
     return render(request, "project_manage.html", {"user": username,"project_data":project_data,
-                                                   "page": page_string})
+                                                   "page": page_string,"type":"list"})
 
 @login_required
 def project_model(request):
@@ -53,9 +52,9 @@ def project_model(request):
     print(id)
     if id is not None:
         project_data = Project.objects.filter(id=id).first()
-        return render(request, "project_model_edit.html",{"project_data":project_data})
+        return render(request, "project_manage.html",{"project_data":project_data,"type":"edit"})
     else:
-        return render(request, "project_model_add.html")
+        return render(request, "project_manage.html",{"type":"add"})
 
 #项目管理-添加
 @login_required
@@ -74,7 +73,7 @@ def project_model_add(request):
 
 #项目管理-删除（根据id删除）
 @login_required
-def project_del(request):
+def project_model_del(request):
     id = request.POST.get('id')
     Project.objects.filter(id=id).delete()
     #return HttpResponseRedirect('/project_manage/')
@@ -82,7 +81,7 @@ def project_del(request):
 
 #项目管理-更新
 @login_required
-def project_update(request):
+def project_model_update(request):
     if request.method == 'POST':
         id = request.POST.get('id')
         title = request.POST.get('title')
