@@ -1,8 +1,10 @@
-from django.shortcuts import render,redirect,HttpResponse,render_to_response
-from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, HttpResponse
+from project_app import html_hepler
 from project_app.models import Project
-from user_app import html_hepler
+from .forms import ProjectForm
+
 # Create your views here.
 
 '''
@@ -34,7 +36,7 @@ def project_manage(request):
         project_data = Project.objects.filter(
                 title__contains=content)
     else:
-        project_data = Project.objects.all()
+        project_data = Project.objects.all()[pageObj.start:pageObj.end]
 
     #project_data = Project.objects.all()[pageObj.start:pageObj.end]
 
@@ -95,6 +97,46 @@ def project_model_update(request):
             status = False
         Project.objects.filter(id=id).update(title=title, describe=describe, create_time=create_time,status=status)
         return HttpResponseRedirect('/manage/project_manage/')
+
+
+@login_required
+def add_project(request):
+    if request.method == "POST":
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            describe =form.cleaned_data["describe"]
+            status =form.cleaned_data["status"]
+            Project.objects.create(title=title, describe=describe, status=status)
+            return HttpResponseRedirect('/manage/project_manage/')
+    else:
+        form = ProjectForm()
+    return render(request, "project_manage.html", {"type": "add","form":form})
+
+
+@login_required
+def edit_project(request,pid = 0):
+    if request.method == "POST":
+        form = ProjectForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data["title"]
+            describe = form.cleaned_data["describe"]
+            status = form.cleaned_data["status"]
+            Project.objects.filter(id=pid).update(title=title, describe=describe,status=status)
+            return HttpResponseRedirect('/manage/project_manage/')
+    else:
+        if pid:
+            form = ProjectForm(instance = Project.objects.filter(id=pid).first())
+        #project_data = Project.objects.filter(id=pid).first()
+        else:
+            form = ProjectForm()
+    return render(request, "project_manage.html", { "type": "edit","form":form,"id":pid})
+
+@login_required
+def del_project(request,pid = 0):
+    id = request.POST.get('id')
+    Project.objects.filter(id=id).delete()
+    return HttpResponse('1')
 
 
 

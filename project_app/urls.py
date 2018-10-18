@@ -23,4 +23,9 @@ urlpatterns = [
      path("project_model_add/", views.project_model_add),
      path("project_model_del/", views.project_model_del),
      path("project_model_update/", views.project_model_update),
+     path("add_project/", views.add_project),
+     path("edit_project/<int:pid>/", views.edit_project),
+     path("del_project/", views.edit_project),
+
+     #r'^plist/$'
 ]

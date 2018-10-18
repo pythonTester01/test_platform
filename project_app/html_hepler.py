@@ -39,7 +39,7 @@ def Pager(page,all_page_count):
     if page <= 1:
         prev_html = "<li class='next'><a href='#'>上一页</a></li>"
     else:
-        prev_html = "<li class='next'><a href='/project_manage/?page=%d'>上一页</a></li>" % (page - 1)
+        prev_html = "<li class='next'><a href='/manage/project_manage/?page=%d'>上一页</a></li>" % (page - 1)
 
     page_html.append(prev_html)
 
@@ -61,12 +61,12 @@ def Pager(page,all_page_count):
     for i in range(begin,end):
         #print begin,end
         if page == i+1:
-            a_html = "<li class='prev disabled'><a href = '/project_manage/?page=%d'>%d</a></li>"%(i+1,i+1)
+            a_html = "<li class='prev disabled'><a href = '/manage/project_manage/?page=%d'>%d</a></li>"%(i+1,i+1)
         else:
-            a_html = "<li class='prev disabled'><a href = '/project_manage/?page=%d'>%d</a></li>" % (i+1, i+1)
+            a_html = "<li class='prev disabled'><a href = '/manage/project_manage/?page=%d'>%d</a></li>" % (i+1, i+1)
 
         page_html.append(a_html)
-    next_html = "<li class='next'><a href = '/project_manage/?page=%d'>下一页</a></li>" % (page + 1)
+    next_html = "<li class='next'><a href = '/manage/project_manage/?page=%d'>下一页</a></li>" % (page + 1)
     page_html.append(next_html)
     page_string = mark_safe("".join(page_html))
     return page_string
