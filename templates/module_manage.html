@@ -1,0 +1,195 @@
+{% extends "common/nav.html" %}
+{% block context %}
+
+<div class="span3" id="sidebar">
+    <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
+        <li>
+            <a href="/manage/project_manage/"><i class="icon-chevron-right"></i>项目管理</a>
+        </li>
+        <li class="active">
+            <a href="/manage/module_manage/"><i class="icon-chevron-right"></i>模块管理</a>
+        </li>
+        <li>
+            <a href="interface.html"><i class="icon-chevron-right"></i>用例管理</a>
+        </li>
+        <li>
+            <a href="interface.html"><i class="icon-chevron-right"></i>任务管理</a>
+        </li>
+        <li>
+            <a href="interface.html"><i class="icon-chevron-right"></i>mockServer</a>
+        </li>
+        <li>
+            <a href="interface.html"><i class="icon-chevron-right"></i>测试工具</a>
+        </li>
+    </ul>
+</div>
+
+<div class="span9" id="content">
+    <div class="row-fluid">
+{% if type == 'list'%}
+     <div class="block">
+        <div class="navbar navbar-inner block-header">
+            <div class="muted pull-left">模块列表</div>
+        </div>
+        <div class="block-content collapse in">
+            <div class="span12">
+               <div class="table-toolbar">
+                  <div class="btn-group">
+                     <a href="/manage/add_module/"><button class="btn btn-success">Add New <i class="icon-plus icon-white"></i></button></a>
+                  </div>
+                  <div class="btn-group pull-right">
+                     <div class="dataTables_filter" id="example_filter">
+                         <form method="post" action="/manage/module_manage/">
+                          <input class="btn" type="submit" value="搜索">
+                          <label><input type="text" aria-controls="example" id="search_project" name="search_project"></label>
+                         </form>
+                    </div>
+                  </div>
+               </div>
+
+                <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered" id="example2">
+                    <thead>
+                        <tr>
+                            <th>序号</th>
+                            <th>名称</th>
+                            <th>描述</th>
+                            <th>项目</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for data in project_data %}
+                        <tr class="gradeU">
+                            <td>{{forloop.counter }}</td>
+                            <td>{{data.name}}</td>
+                            <td class="center">{{data.describe}}</td>
+                            <td>{{data.project}}</td>
+                            <td class="center">{{ data.create_time | date:"Y-m-d H:i:s" }}</td>
+                            <td class="center" style="width: 60px;">
+                                <a onclick="del_id('{{ data.id }}')"><i class="icon-remove"></i></a>
+                                &nbsp;&nbsp;&nbsp;
+                                <a href="/manage/edit_module/{{ data.id }}/"><i class="icon-pencil"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div id="pageslist" class="dataTables_paginate paging_bootstrap pagination">
+                <ul>
+                    {{ page }}
+                </ul>
+            </div>
+        </div>
+     </div>
+    </div>
+</div>
+ {% endif %}
+{% if type == "add" %}
+<div class="block">
+    <div class="navbar navbar-inner block-header">
+        <div class="muted pull-left">添加模块</div>
+    </div>
+    <div class="block-content collapse in">
+        <div class="span12">
+            <form class="form-horizontal" action="/manage/add_module/" method="post">
+                            <fieldset>
+                <legend>Form Horizontal</legend>
+                <div class="control-group">
+                  <label class="control-label">关联项目</label>
+                  <div class="controls">
+                    {{form.project}}
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">模块名称</label>
+                  <div class="controls">
+                    {{form.name}}
+                  </div>
+                  <div class="controls">
+                    <input class="input-xlarge focused" name="id"  type="hidden" value={{project_data.id}}>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">模块描述</label>
+                  <div class="controls">
+                    {{form.describe}}
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">保存</button>
+                  <button type="reset" class="btn" onclick="window.location.href='/manage/module_manage/'">取消</button>
+                </div>
+              </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+ {% endif %}
+{% if type == "edit" %}
+<div class="block">
+    <div class="navbar navbar-inner block-header">
+        <div class="muted pull-left">模块编辑</div>
+    </div>
+    <div class="block-content collapse in">
+        <div class="span12">
+            <form class="form-horizontal" action="/manage/edit_module/{{id}}/" method="post">
+              <fieldset>
+                <legend>Form Horizontal</legend>
+                <div class="control-group">
+                  <label class="control-label">关联项目</label>
+                  <div class="controls">
+                    {{form.project}}
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">模块名称</label>
+                  <div class="controls">
+                    {{form.name}}
+                  </div>
+                  <div class="controls">
+                    <input class="input-xlarge focused" name="id"  type="hidden" value={{project_data.id}}>
+                  </div>
+                </div>
+                <div class="control-group">
+                  <label class="control-label">模块描述</label>
+                  <div class="controls">
+                    {{form.describe}}
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-primary">保存</button>
+                  <button type="reset" class="btn" onclick="window.location.href='/manage/module_manage/'">取消</button>
+                </div>
+              </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+ {% endif %}
+<script src="/static/vendors/jquery-1.9.1.js"></script>
+<script>
+              function del_id(id) {
+                  //alert(11);
+                  //id1 = $("#del_id").val();
+                  //alert(id);
+                  $.ajax({
+                      type: 'POST',
+                      url: '/manage/del_module/',
+                      data: {"id": id},
+                      //async : false,
+                      //dataType: 'json',
+                      success: function (data) {
+                          if (data == "1") {
+                              alert("删除成功！");
+                              window.location.reload();
+                          }
+                      },
+                      error: function () {
+                      }
+                  });
+
+              }
+        </script>
+    {% endblock context %}

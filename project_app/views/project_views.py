@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, HttpResponse
 from project_app import html_hepler
 from project_app.models import Project
-from .forms import ProjectForm
+from project_app.forms import ProjectForm
 
 # Create your views here.
 
@@ -101,6 +101,9 @@ def project_manage(request):
 
 @login_required
 def add_project(request):
+    '''
+    项目添加
+    '''
     if request.method == "POST":
         form = ProjectForm(request.POST)
         if form.is_valid():
@@ -115,7 +118,10 @@ def add_project(request):
 
 
 @login_required
-def edit_project(request,pid = 0):
+def edit_project(request,pid):
+    '''
+    项目编辑功能
+    '''
     if request.method == "POST":
         form = ProjectForm(request.POST)
         if form.is_valid():
@@ -128,12 +134,14 @@ def edit_project(request,pid = 0):
         if pid:
             form = ProjectForm(instance = Project.objects.filter(id=pid).first())
         #project_data = Project.objects.filter(id=pid).first()
-        else:
-            form = ProjectForm()
+
     return render(request, "project_manage.html", { "type": "edit","form":form,"id":pid})
 
 @login_required
-def del_project(request,pid = 0):
+def del_project(request):
+    '''
+    项目删除
+    '''
     id = request.POST.get('id')
     Project.objects.filter(id=id).delete()
     return HttpResponse('1')

@@ -15,17 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from project_app import views
-
+from project_app.views import project_views
+from project_app.views import module_views
 urlpatterns = [
-     path("project_manage/", views.project_manage),
+     path("project_manage/", project_views.project_manage),
+     path("module_manage/", module_views.module_manage),
      #path("project_model/", views.project_model),
      #path("project_model_add/", views.project_model_add),
      #path("project_model_del/", views.project_model_del),
      #path("project_model_update/", views.project_model_update),
-     path("add_project/", views.add_project),
-     path("edit_project/<int:pid>/", views.edit_project),
-     path("del_project/", views.edit_project),
+     path("add_project/", project_views.add_project),
+     path("edit_project/<int:pid>/", project_views.edit_project),
+     path("del_project/", project_views.del_project),
+     path("add_module/", module_views.add_module),
+     path("edit_module/<int:pid>/", module_views.edit_module),
+     path("del_module/", module_views.del_module),
 
-     #r'^plist/$'
 ]
