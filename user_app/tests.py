@@ -67,5 +67,11 @@ class UserTestCase(TestCase):
         '''测试登录成功'''
         login_Data = {"username": "test01", "password": "test01"}
         response = self.client.post("/user/login_action/", data=login_Data)
-        login_html = response.content.decode("utf-8")
+        #login_html = response.content.decode("utf-8")
+        self.assertEqual(response.status_code, 302)
+
+    def test_login_success(self):
+        '''测试退出成功'''
+        response = self.client.post("/user/logout/")
+
         self.assertEqual(response.status_code, 302)
