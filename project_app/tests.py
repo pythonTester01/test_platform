@@ -2,6 +2,7 @@ from django.test import TestCase,Client
 from django.contrib.auth.models import User
 from project_app.models import Project
 # Create your tests here.
+
 class ProjectTest(TestCase):
 
     def setUp(self):
@@ -60,3 +61,25 @@ class ProjectTest(TestCase):
         self.assertNotIn(porject_html,"test01" )
         self.assertEqual(response.status_code, 200)
         print("5")
+
+    '''以下是models层的单元测试'''
+
+    def test_find_project(self):
+        project = Project.objects.get(title = "test01")
+        self.assertEqual("test01",project.title)
+
+    def test_add_project(self):
+        Project.objects.create(title="test02",describe="aaa")
+        project = Project.objects.get(title="test02")
+        self.assertEqual("test02", project.title)
+
+    def test_update_project(self):
+        project = Project.objects.get(title = "test01")
+        Project.objects.filter(title=project.title).update(title="test03", describe="333aaa")
+        project = Project.objects.get(title="test03")
+        self.assertEqual("test03", project.title)
+
+    def test_delete_project(self):
+        Project.objects.get(title="test01").delete()
+        project = Project.objects.all()
+        self.assertEqual(len(project), 0)
