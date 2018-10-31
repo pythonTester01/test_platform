@@ -68,7 +68,7 @@ class ProjectTest(TestCase):
         project = Project.objects.get(title = "test01")
         self.assertEqual("test01",project.title)
 
-    def test_add_project(self):
+    def test_create_project(self):
         Project.objects.create(title="test02",describe="aaa")
         project = Project.objects.get(title="test02")
         self.assertEqual("test02", project.title)
