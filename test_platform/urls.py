@@ -23,4 +23,5 @@ urlpatterns = [
     path("accounts/login/", views.index),
     path("manage/", include("project_app.urls")),
     path("user/", include("user_app.urls")),
+    path("interface/", include("interface_app.urls")),
 ]

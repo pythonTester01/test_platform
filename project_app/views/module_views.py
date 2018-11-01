@@ -48,9 +48,7 @@ def module_manage(request):
 
 @login_required
 def add_module(request):
-    '''
-    项目添加
-    '''
+    '''添加模块'''
     if request.method == "POST":
         form = ModuleForm(request.POST)
         if form.is_valid():
@@ -67,7 +65,7 @@ def add_module(request):
 @login_required
 def edit_module(request,pid):
     '''
-    项目编辑功能
+    编辑模块功能
     '''
     if request.method == "POST":
         form = ModuleForm(request.POST)
@@ -86,11 +84,9 @@ def edit_module(request,pid):
 
 @login_required
 def del_module(request):
-    '''
-    项目删除
-    '''
+    '''模块删除'''
     id = request.POST.get('id')
-    Model.objects.filter(id=id).delete()
+    Model.objects.get(id=id).delete()
     return HttpResponse('1')
 
 
