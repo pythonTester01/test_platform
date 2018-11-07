@@ -35,7 +35,8 @@
             <div class="span12">
                <div class="table-toolbar">
                   <div class="btn-group">
-                     <a href="/interface/api_debug/"><button class="btn btn-success">&nbsp&nbsp&nbsp调&nbsp&nbsp试&nbsp&nbsp<i class="icon-plus icon-white"></i>&nbsp</button></a>
+                     <!--<a><button class="btn btn-success" onclick="window.location.href='/interface/debug/'">&nbsp&nbsp&nbsp调&nbsp&nbsp试&nbsp&nbsp<i class="icon-plus icon-white"></i>&nbsp</button></a>-->
+                     <a><button class="btn btn-success" onclick="window.location.href='/interface/debug/'">&nbsp&nbsp&nbsp调&nbsp&nbsp试&nbsp&nbsp<i class="icon-plus icon-white"></i>&nbsp</button></a>
                   </div>
                </div>
 
@@ -46,7 +47,7 @@
     </div>
 </div>
  {% endif %}
-{% if type == "api_debug" %}
+{% if type == "debug" %}
 <div class="block">
     <div class="navbar navbar-inner block-header">
         <div class="muted pull-left">在线POSTMAN</div>
@@ -59,7 +60,7 @@
         </div>
     </div>
 </div>
- {% endif %}
+{% endif %}
 {% if type == "edit" %}
 <div class="block">
     <div class="navbar navbar-inner block-header">
@@ -100,29 +101,5 @@
         </div>
     </div>
 </div>
- {% endif %}
-<script src="/static/vendors/jquery-1.9.1.js"></script>
-<script>
-              function del_id(id) {
-                  //alert(11);
-                  //id1 = $("#del_id").val();
-                  //alert(id);
-                  $.ajax({
-                      type: 'POST',
-                      url: '/manage/del_module/',
-                      data: {"id": id},
-                      //async : false,
-                      //dataType: 'json',
-                      success: function (data) {
-                          if (data == "1") {
-                              alert("删除成功！");
-                              window.location.reload();
-                          }
-                      },
-                      error: function () {
-                      }
-                  });
-
-              }
-        </script>
-    {% endblock context %}
+{% endif %}
+{% endblock context %}

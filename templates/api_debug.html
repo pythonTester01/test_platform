@@ -5,8 +5,9 @@
     label {vertical-align:middle;display:inline-block;}
     textarea {width: 77%;height: 180px}
 </style>
-  <form class="form-horizontal" action="/interface/debug/" method="get">
-    <fieldset>
+
+<fieldset>
+<form class="form-horizontal"　 action="#">
     <div class="control-group">
 
           <!-- Text input-->
@@ -15,7 +16,7 @@
             <input type="text" id="api_name" class="input-xlarge" style="width: 77%">
             <p class="help-block"></p>
           </div>
-        </div>
+    </div>
 
     <div class="control-group">
 
@@ -25,7 +26,7 @@
             <input type="text"  id="api_url" class="input-xlarge" style="width: 77%">
             <p class="help-block"></p>
           </div>
-        </div>
+    </div>
 
     <div class="control-group">
           <label class="control-label">请求方式：</label>
@@ -33,23 +34,23 @@
 
             <!-- Inline Radios -->
             <label class="radio inline">
-              <input type="radio" value="get" id="get" checked="checked" name="group">
+              <input type="radio" value="get" id="get" name="req_mode" checked>
               GET
             </label>
             <label class="radio inline">
-              <input type="radio" value="post" id="post" name="group">
+              <input type="radio" value="post" id="post" name="req_mode">
               POST
             </label>
             <label class="radio inline">
-              <input type="radio" value="pub" id="pub">
+              <input type="radio" value="pub" id="pub" name="req_mode">
               PUT
             </label>
             <label class="radio inline">
-              <input type="radio" value="delete" id="delete">
+              <input type="radio" value="delete" id="delete" name="req_mode">
               DELETE
             </label>
           </div>
-        </div>
+    </div>
 
     <div class="control-group">
           <label class="control-label">参数类型：</label>
@@ -57,58 +58,97 @@
 
             <!-- Inline Radios -->
             <label class="radio inline">
-              <input type="radio" value="form-data" id="form-data" checked="checked" name="group">
+              <input type="radio" value="form" id="form" name="parameter" checked>
               form-data
             </label>
             <label class="radio inline">
-              <input type="radio" value="json" id="json" name="group">
+              <input type="radio" value="json" id="json" name="parameter">
               json
             </label>
           </div>
-        </div>
+    </div>
 
     <div class="control-group">
 
           <!-- Text input-->
-          <label class="control-label" for="input01">Header：</label>
+          <label class="control-label">Header：</label>
           <div class="controls">
             <input type="text" id="api_header" class="input-xlarge" style="width: 77%">
             <p class="help-block" style="color:#8B8989">说明：以字典的方式设置参数，如：{"content-type": "application/json"}</p>
           </div>
-        </div>
+    </div>
 
     <div class="control-group">
 
           <!-- Text input-->
-          <label class="control-label" for="input01">参数： </label>
+          <label class="control-label">参数： </label>
           <div class="controls">
             <input type="text" id="api_parameter" class="input-xlarge" style="width: 77%">
-            <p class="help-block" style="color:#8B8989">说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}<</p>
+            <p class="help-block" style="color:#8B8989">说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}</p>
           </div>
-        </div>
+    </div>
 
     <div class="control-group">
           <label class="control-label">操作：</label>
-
           <!-- Button -->
           <div class="controls">
             <button class="btn btn-success" id="send">调试</button>
+            <button class="btn btn-success" id="save">保存</button>
           </div>
-        </div>
+    </div>
+</form>
 
 
-
-    <div class="control-group">
-
+    <div class="form-horizontal">
           <!-- Textarea -->
           <label class="control-label">返回结果：</label>
           <div class="controls">
             <div class="textarea">
-                  <textarea id="result" type="" class=""> </textarea>
+                  <textarea id="result" class="form-control" rows="10"> </textarea>
             </div>
           </div>
-        </div>
+    </div>
+</fieldset>
 
-    </fieldset>
-  </form>
+<script src="/static/vendors/jquery-1.9.1.js"></script>
+<script type="text/javascript">
+
+           $(document).ready(function(){
+            $("#send").click(function(){
+                alert("111");
+                var api_name = $("#api_name").val();
+                var api_url = $("#api_url").val();
+                var req_mode =  $("input[name='req_mode']:checked").val();
+                var par_type =  $("input[name='parameter']:checked").val();
+                var api_header = $("#api_header").val();
+                var api_parameter = $("#api_parameter").val();
+
+                if(api_url ==""){
+                    alert("URL不能为空！");
+                }
+
+                if(api_parameter==""){
+                    api_parameter="{}" ;
+                }
+                $.ajax({
+                      type: 'POST',
+                      url: '/interface/api_debug/',
+                      data: {
+                            "api_url":api_url,
+                            "req_mode":req_mode,
+                            "par_type":par_type,
+                            "api_header":api_header,
+                            "api_parameter":api_parameter
+                      },
+                      async : false,
+                      //dataType: 'json',
+                      success: function (data) {
+                          alert(data);
+                          $("#result").html(data);
+                          //alert(data);
+                      },
+                  });
+                })
+            })
+</script>
 {% endblock %}
