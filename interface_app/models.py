@@ -12,6 +12,8 @@ class TestCase(models.Model):
     req_header = models.TextField("HEADER",default="")
     req_para = models.TextField("参数",default="")
     response_assert = models.TextField("验证",default="")
+    creator = models.TextField("创建人",default="")
+    create_time = models.DateTimeField("创建时间", auto_now=True)
 
     def __str__(self):
         return self.name

@@ -11,6 +11,15 @@
     <div class="control-group">
 
           <!-- Text input-->
+          <label class="control-label">所属模块：</label>
+          <div class="controls">
+                {{ form.module}}
+            <p class="help-block"></p>
+          </div>
+    </div>
+    <div class="control-group">
+
+          <!-- Text input-->
           <label class="control-label">名称：</label>
           <div class="controls">
             <input type="text" id="api_name" class="input-xlarge" style="width: 77%">
@@ -92,8 +101,8 @@
           <label class="control-label">操作：</label>
           <!-- Button -->
           <div class="controls">
-            <button class="btn btn-success" id="send">调试</button>
-            <button class="btn btn-success" id="save">保存</button>
+            <button class="btn btn-success" id="send" type="button">调试</button>
+            <button class="btn btn-success" id="save" type="button">保存</button>
           </div>
     </div>
 </form>
@@ -108,6 +117,10 @@
             </div>
           </div>
     </div>
+    <p></p>
+    <p></p>
+    <p></p>
+    <p></p>
 </fieldset>
 
 <script src="/static/vendors/jquery-1.9.1.js"></script>
@@ -116,7 +129,7 @@
            $(document).ready(function(){
             $("#send").click(function(){
                 alert("111");
-                var api_name = $("#api_name").val();
+                //var api_name = $("#api_name").val();
                 var api_url = $("#api_url").val();
                 var req_mode =  $("input[name='req_mode']:checked").val();
                 var par_type =  $("input[name='parameter']:checked").val();
@@ -143,9 +156,49 @@
                       async : false,
                       //dataType: 'json',
                       success: function (data) {
-                          alert(data);
+
                           $("#result").html(data);
                           //alert(data);
+                      },
+                  });
+                })
+               $("#save").click(function(){
+                var mid = $("select[name='module']").val();
+                var api_name = $("#api_name").val();
+                var api_url = $("#api_url").val();
+                var req_mode =  $("input[name='req_mode']:checked").val();
+                var par_type =  $("input[name='parameter']:checked").val();
+                var api_header = $("#api_header").val();
+                var api_parameter = $("#api_parameter").val();
+
+
+                if(api_name ==""){
+                    alert("名称不能为空！")
+                }
+                if(api_url ==""){
+                    alert("URL不能为空！");
+                }
+
+                if(api_parameter==""){
+                    api_parameter="{}" ;
+                }
+                $.ajax({
+                      type: 'POST',
+                      url: '/interface/save_case/',
+                      data: {"mid":mid,
+                            "api_name":api_name,
+                            "api_url":api_url,
+                            "req_mode":req_mode,
+                            "par_type":par_type,
+                            "api_header":api_header,
+                            "api_parameter":api_parameter
+                      },
+                      async : false,
+                      //dataType: 'json',
+                      success: function (data) {
+
+                          //$("#result").html(data);
+                          alert("保存成功！");
                       },
                   });
                 })

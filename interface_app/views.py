@@ -3,13 +3,17 @@ import requests
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.decorators import login_required
+from project_app.models import Model
+from interface_app.models import TestCase
+from interface_app.forms import TestCaseForm
 # Create your views here.
 
 @login_required
 def case_manage(request):
 
     if request.method == "GET":
-        return render(request,"case_manage.html",{"type":"list"})
+        case_list = TestCase.objects.all()
+        return render(request,"case_manage.html",{"type":"list","case_list":case_list})
     else:
         return "404"
 
@@ -17,34 +21,36 @@ def case_manage(request):
 def api_debug(request):
     '''创建调试接口'''
     if request.method == "POST":
-        api_name = request.POST.get("api_name")
         api_url = request.POST.get("api_url")
-        req_mode = request.POST.get("req_mode")
-        par_type = request.POST.get("par_type")
+        req_mode = request.POST.get("req_mode") #GET POST
+        par_type = request.POST.get("par_type") #data json
         api_header = request.POST.get("api_header")
         api_parameter = request.POST.get("api_parameter")
 
 
 
-        if api_header is None:
-            pass
-        if api_parameter is None:
-            api_parameter={}
-        param = json.loads(api_parameter.replace("'", "\""))
 
+        if api_header == "":
+            api_header = "{}"
+        if api_parameter == "":
+            api_parameter= "{}"
+        #if par_type != "json":
+        #param = json.loads(api_parameter.replace("'", "\""))
+        #api_header = json.loads(api_header.replace("'", "\""))
 
-
-        if req_mode =="get":
-            r = requests.get(api_url)
+        #data = ""
+        if req_mode == "get":
+            data = requests.get(api_url, params=api_parameter)
         if req_mode == "post":
-            r = requests.post(api_url, params=param,header=api_header)
+            data = requests.post(api_url, data=api_parameter)
+
+
         # if req_mode == "put":
         #     data = requests.put(api_url, params=param,header=api_header)
         # if req_mode == "delete":
         #     data = requests.delete(api_url, params=param,header=api_header)
+        return HttpResponse(data.text.encode("utf-8"))
 
-
-        return HttpResponse(r.text.encode("utf-8"))
 
 
 
@@ -53,8 +59,44 @@ def api_debug(request):
 @login_required
 def debug(request):
     if request.method == "GET":
+        form = TestCaseForm()
         return render(request, "api_debug.html", {
-            "type": "debug"
+            "type": "debug","form":form
         })
+    else:
+        return HttpResponse("404")
+
+#保存测试用例
+@login_required
+def save_case(request):
+    if request.method == "POST":
+        mid = request.POST.get("mid","")
+        api_name = request.POST.get("api_name","")
+        api_url = request.POST.get("api_url","")
+        req_mode = request.POST.get("req_mode","")
+        par_type = request.POST.get("par_type","")
+        api_header = request.POST.get("api_header","")
+        api_parameter = request.POST.get("api_parameter","")
+
+        if api_url == "" or req_mode =="" or par_type=="" or mid =="":
+
+            return HttpResponse("必传参数为空！")
+
+        if api_header == "":
+            api_header = "{}"
+        if api_parameter == "":
+            api_parameter = "{}"
+
+        module_obj = Model.objects.get(id=mid)
+
+        case_data = TestCase.objects.create(module=module_obj,
+                                name=api_name,url=api_url,
+                                req_methed=req_mode,req_type=par_type,
+                                req_header=api_header,req_para=api_parameter)
+
+
+        if case_data is not None:
+            return HttpResponse("1")
+
     else:
         return HttpResponse("404")

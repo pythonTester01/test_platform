@@ -22,6 +22,7 @@ urlpatterns = [
      path("case_manage/", views.case_manage),
      path("api_debug/", views.api_debug),
      path("debug/", views.debug),
+     path("save_case/", views.save_case),
 
 
 ]
