@@ -77,7 +77,7 @@
                             <td class="center" style="width: 60px;">
                                 <a onclick="del_id('{{ data.id }}')"><i class="icon-remove"></i></a>
                                 &nbsp;&nbsp;&nbsp;
-                                <a href="/manage/edit_module/{{ data.id }}/"><i class="icon-pencil"></i></a>
+                                <a href="/interface/edit_case/{{ data.id }}/"><i class="icon-pencil"></i></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -106,42 +106,39 @@
 {% if type == "edit" %}
 <div class="block">
     <div class="navbar navbar-inner block-header">
-        <div class="muted pull-left">模块编辑</div>
+        <div class="muted pull-left">在线POSTMAN</div>
     </div>
     <div class="block-content collapse in">
         <div class="span12">
-            <form class="form-horizontal" action="/manage/edit_module/{{id}}/" method="post">
-              <fieldset>
-                <legend>Form Horizontal</legend>
-                <div class="control-group">
-                  <label class="control-label">关联项目</label>
-                  <div class="controls">
-                    {{form.project}}
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label">模块名称</label>
-                  <div class="controls">
-                    {{form.name}}
-                  </div>
-                  <div class="controls">
-                    <input class="input-xlarge focused" name="id"  type="hidden" value={{project_data.id}}>
-                  </div>
-                </div>
-                <div class="control-group">
-                  <label class="control-label">模块描述</label>
-                  <div class="controls">
-                    {{form.describe}}
-                  </div>
-                </div>
-                <div class="form-actions">
-                  <button type="submit" class="btn btn-primary">保存</button>
-                  <button type="reset" class="btn" onclick="window.location.href='/manage/module_manage/'">取消</button>
-                </div>
-              </fieldset>
-            </form>
+            {% block edit_debug %}
+
+            {% endblock %}
         </div>
     </div>
 </div>
 {% endif %}
+<script src="/static/vendors/jquery-1.9.1.js"></script>
+<script>
+              function del_id(id) {
+                  //alert(11);
+                  //id1 = $("#del_id").val();
+                  //alert(id);
+                  $.ajax({
+                      type: 'POST',
+                      url: '/interface/del_case/',
+                      data: {"id": id},
+                      //async : false,
+                      //dataType: 'json',
+                      success: function (data) {
+                          if (data == "1") {
+                              alert("删除成功！");
+                              window.location.reload();
+                          }
+                      },
+                      error: function () {
+                      }
+                  });
+
+              }
+        </script>
 {% endblock context %}

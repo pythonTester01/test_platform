@@ -139,9 +139,7 @@ def edit_project(request,pid):
 
 @login_required
 def del_project(request):
-    '''
-    项目删除
-    '''
+    '''项目删除'''
     id = request.POST.get('id')
     Project.objects.filter(id=id).delete()
     return HttpResponse('1')

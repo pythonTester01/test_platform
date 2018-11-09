@@ -1,7 +1,7 @@
 import json
 import requests
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from project_app.models import Model
 from interface_app.models import TestCase
@@ -100,3 +100,33 @@ def save_case(request):
 
     else:
         return HttpResponse("404")
+
+@login_required
+def del_case(request):
+    '''删除用例'''
+    id = request.POST.get('id')
+    TestCase.objects.filter(id=id).delete()
+    return HttpResponse('1')
+
+@login_required
+def edit_case(request,mid):
+    '''项目用例功能'''
+    if request.method == "POST":
+        form = TestCaseForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data["api_name"]
+            url = form.cleaned_data["api_url"]
+            req_methed = form.cleaned_data["req_mode"]
+            req_type = form.cleaned_data["par_type"]
+            req_header = form.cleaned_data["api_header"]
+            req_para = form.cleaned_data["api_parameter"]
+            TestCase.objects.filter(id=mid).update(name=name, url=url,req_methed=req_methed
+                    ,req_type=req_type,req_header=req_header,req_para=req_para)
+            return HttpResponseRedirect('/interface/case_manage/')
+    else:
+        if mid:
+            form = TestCaseForm(instance = TestCase.objects.filter(id=mid).first())
+
+
+    return render(request, "api_edit_debug.html", {"type": "edit", "form": form, "id": mid})
+

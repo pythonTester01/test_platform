@@ -1,5 +1,5 @@
 {% extends "case_manage.html" %}
-{% block debug %}
+{% block edit_debug %}
 <style>
     fieldset {margin-top: 2%}
     label {vertical-align:middle;display:inline-block;}
@@ -22,17 +22,18 @@
           <!-- Text input-->
           <label class="control-label">名称：</label>
           <div class="controls">
-            <input type="text" id="api_name" class="input-xlarge" style="width: 77%">
+              {{form.name}}
+            <!--<input type="text" id="api_name" class="input-xlarge" style="width: 77%">-->
             <p class="help-block"></p>
           </div>
     </div>
 
     <div class="control-group">
-
           <!-- Text input-->
           <label class="control-label">URL：</label>
           <div class="controls">
-            <input type="text"  id="api_url" class="input-xlarge" style="width: 77%">
+              {{form.url}}
+              <!--<input type="text"  id="api_url" class="input-xlarge" style="width: 77%">-->
             <p class="help-block"></p>
           </div>
     </div>
@@ -43,7 +44,7 @@
 
             <!-- Inline Radios -->
             <label class="radio inline">
-              <input type="radio" value="get" id="get" name="req_mode" checked>
+                <input type="radio" value="get" id="get" name="req_mode" checked>
               GET
             </label>
             <label class="radio inline">
@@ -82,7 +83,8 @@
           <!-- Text input-->
           <label class="control-label">Header：</label>
           <div class="controls">
-            <input type="text" id="api_header" class="input-xlarge" style="width: 77%">
+              {{form.req_header}}
+            <!--<input type="text" id="api_header" class="input-xlarge" style="width: 77%">-->
             <p class="help-block" style="color:#8B8989">说明：以字典的方式设置参数，如：{"content-type": "application/json"}</p>
           </div>
     </div>
@@ -92,7 +94,8 @@
           <!-- Text input-->
           <label class="control-label">参数： </label>
           <div class="controls">
-            <input type="text" id="api_parameter" class="input-xlarge" style="width: 77%">
+              {{form.req_para}}
+            <!--<input type="text" id="api_parameter" class="input-xlarge" style="width: 77%">-->
             <p class="help-block" style="color:#8B8989">说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}</p>
           </div>
     </div>
@@ -102,7 +105,7 @@
           <!-- Button -->
           <div class="controls">
             <button class="btn btn-success" id="send" type="button">调试</button>
-            <button class="btn btn-success" id="save" type="button">保存</button>
+            <button class="btn btn-success" id="save" type="button">更新</button>
           </div>
     </div>
 </form>
@@ -184,7 +187,7 @@
                 }
                 $.ajax({
                       type: 'POST',
-                      url: '/interface/save_case/',
+                      url: '/interface/edit_case/',
                       data: {"mid":mid,
                             "api_name":api_name,
                             "api_url":api_url,
