@@ -6,14 +6,25 @@ from django.contrib.auth.decorators import login_required
 from project_app.models import Model
 from interface_app.models import TestCase
 from interface_app.forms import TestCaseForm
+from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 # Create your views here.
 
 @login_required
 def case_manage(request):
 
     if request.method == "GET":
-        case_list = TestCase.objects.all()
-        return render(request,"case_manage.html",{"type":"list","case_list":case_list})
+        case_list = TestCase.objects.all().order_by("name")
+
+        paginator = Paginator(case_list,5)
+
+        page = request.GET.get("page")
+        try:
+            contacts = paginator.get_page(page)
+        except EmptyPage:
+            contacts = paginator.page(1)
+        except PageNotAnInteger:
+            contacts = paginator.page(paginator.num_pages)
+        return render(request,"case_manage.html",{"type":"list","contacts": contacts})
     else:
         return "404"
 
@@ -114,13 +125,17 @@ def edit_case(request,mid):
     if request.method == "POST":
         form = TestCaseForm(request.POST)
         if form.is_valid():
+            eid = form.cleaned_data["eid"]
+            print(eid)
+            module_obj = Model.objects.get(id=eid)
+            module = form.cleaned_data[module_obj],
             name = form.cleaned_data["api_name"]
             url = form.cleaned_data["api_url"]
             req_methed = form.cleaned_data["req_mode"]
             req_type = form.cleaned_data["par_type"]
             req_header = form.cleaned_data["api_header"]
             req_para = form.cleaned_data["api_parameter"]
-            TestCase.objects.filter(id=mid).update(name=name, url=url,req_methed=req_methed
+            TestCase.objects.filter(id=mid).update(module=module, name=name, url=url,req_methed=req_methed
                     ,req_type=req_type,req_header=req_header,req_para=req_para)
             return HttpResponseRedirect('/interface/case_manage/')
     else:
@@ -129,4 +144,5 @@ def edit_case(request,mid):
 
 
     return render(request, "api_edit_debug.html", {"type": "edit", "form": form, "id": mid})
+    #return render(request, "api_debug.html", {"type": "edit", "form": form, "id": mid})
 

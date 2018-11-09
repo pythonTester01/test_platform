@@ -51,11 +51,9 @@
                     <thead>
                         <tr>
                             <th>序号</th>
-                            <th>所属项目</th>
-                            <th>所属模块</th>
                             <th>用例名称</th>
-                            <th>请求方式</th>
                             <th>URL</th>
+                            <th>请求方式</th>
                             <th>参数</th>
                             <th>预期结果</th>
                             <th>创建时间</th>
@@ -63,14 +61,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                    {% for data in case_list %}
+                    {% for data in contacts %}
                         <tr class="gradeU">
                             <td>{{forloop.counter }}</td>
-                            <td>{{data.ptoject}}</td>
-                            <td class="center">{{data.module}}</td>
                             <td class="center">{{data.name}}</td>
-                            <td>{{data.req_methed}}</td>
                             <td>{{data.url}}</td>
+                            <td>{{data.req_methed}}</td>
                             <td>{{data.req_para}}</td>
                             <td>{{data.response_assert}}</td>
                             <td class="center">{{ data.create_time | date:"Y-m-d H:i:s" }}</td>
@@ -84,6 +80,28 @@
                     </tbody>
                 </table>
             </div>
+            <!-- 列表分页器 -->
+          <div class="pagination">
+            <span class="step-links">
+              <ul class="pagination">
+                {% if contacts.has_previous %}
+                  <li><a href="?page={{ contacts.previous_page_number }}">&laquo;</a></li>
+                {% endif %}
+
+                 <li><a href="#">{{ contacts.number }}</a></li>
+
+                {% if contacts.has_next %}
+                  {% if phone %}
+                    <li><a href="?&page={{ contacts.next_page_number }}">&raquo;</a></li>
+                  {% else %}
+                   <li><a href="?page={{ contacts.next_page_number }}">&raquo;</a></li>
+                  {% endif %}
+                {% endif %}
+                <li><a href="#">共：{{ contacts.paginator.num_pages }} 页</a></li>
+              </ul>
+            </span>
+          </div>
+
         </div>
      </div>
     </div>

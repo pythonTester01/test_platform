@@ -7,7 +7,7 @@
 </style>
 
 <fieldset>
-<form class="form-horizontal"　 action="#">
+<form class="form-horizontal"　 action="/interface/edit_case/{{id}}/" method="post">
     <div class="control-group">
 
           <!-- Text input-->
@@ -90,7 +90,6 @@
     </div>
 
     <div class="control-group">
-
           <!-- Text input-->
           <label class="control-label">参数： </label>
           <div class="controls">
@@ -105,7 +104,7 @@
           <!-- Button -->
           <div class="controls">
             <button class="btn btn-success" id="send" type="button">调试</button>
-            <button class="btn btn-success" id="save" type="button">更新</button>
+            <button class="btn btn-success" id="update" type="submit">更新</button>
           </div>
     </div>
 </form>
@@ -162,46 +161,6 @@
 
                           $("#result").html(data);
                           //alert(data);
-                      },
-                  });
-                })
-               $("#save").click(function(){
-                var mid = $("select[name='module']").val();
-                var api_name = $("#api_name").val();
-                var api_url = $("#api_url").val();
-                var req_mode =  $("input[name='req_mode']:checked").val();
-                var par_type =  $("input[name='parameter']:checked").val();
-                var api_header = $("#api_header").val();
-                var api_parameter = $("#api_parameter").val();
-
-
-                if(api_name ==""){
-                    alert("名称不能为空！")
-                }
-                if(api_url ==""){
-                    alert("URL不能为空！");
-                }
-
-                if(api_parameter==""){
-                    api_parameter="{}" ;
-                }
-                $.ajax({
-                      type: 'POST',
-                      url: '/interface/edit_case/',
-                      data: {"mid":mid,
-                            "api_name":api_name,
-                            "api_url":api_url,
-                            "req_mode":req_mode,
-                            "par_type":par_type,
-                            "api_header":api_header,
-                            "api_parameter":api_parameter
-                      },
-                      async : false,
-                      //dataType: 'json',
-                      success: function (data) {
-
-                          //$("#result").html(data);
-                          alert("保存成功！");
                       },
                   });
                 })
