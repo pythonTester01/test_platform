@@ -14,7 +14,7 @@ from common.page_help import page
 def case_manage(request):
 
     if request.method == "GET":
-        case_list = TestCase.objects.all().order_by("name")
+        case_list = TestCase.objects.all().order_by("-create_time")
 
         contacts = page(request,case_list)
         # paginator = Paginator(case_list,5)

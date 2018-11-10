@@ -37,7 +37,7 @@
                       </div>
                       <div class="btn-group pull-right">
                          <div class="dataTables_filter" id="example_filter">
-                             <form method="post" action="/manage/project_manage/">
+                             <form method="get" action="/manage/search_project/">
                               <input class="btn" type="submit" value="搜索">
                               <label><input type="text" aria-controls="example" id="search_project" name="search_project"></label>
                              </form>
@@ -57,7 +57,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                        {% for data in project_data %}
+                        {% for data in contacts %}
                             <tr class="gradeU">
                                 <td>{{forloop.counter }}</td>
                                 <td>{{data.title}}</td>
@@ -74,11 +74,27 @@
                         </tbody>
                     </table>
                 </div>
-                <div id="pageslist" class="dataTables_paginate paging_bootstrap pagination">
-                    <ul>
-                        {{ page }}
-                    </ul>
-                </div>
+                <!-- 列表分页器 -->
+              <div class="pagination">
+                <span class="step-links">
+                  <ul class="pagination">
+                    {% if contacts.has_previous %}
+                      <li><a href="?search_project={{ search_project }}&page={{ contacts.previous_page_number }}">&laquo;</a></li>
+                    {% endif %}
+
+                     <li><a href="#">{{ contacts.number }}</a></li>
+
+                    {% if contacts.has_next %}
+                      {% if phone %}
+                        <li><a href="?search_project={{ search_project }}&page={{ contacts.next_page_number }}">&raquo;</a></li>
+                      {% else %}
+                       <li><a href="?search_project={{ search_project }}&page={{ contacts.next_page_number }}">&raquo;</a></li>
+                      {% endif %}
+                    {% endif %}
+                    <li><a href="#">共：{{ contacts.paginator.num_pages }} 页</a></li>
+                  </ul>
+                </span>
+              </div>
             </div>
          </div>
     </div>

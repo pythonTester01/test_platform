@@ -18,6 +18,7 @@ from django.urls import path
 from project_app.views import module_views
 from project_app.views import project_views
 
+
 urlpatterns = [
      path("project_manage/", project_views.project_manage),
      path("module_manage/", module_views.module_manage),
@@ -27,9 +28,11 @@ urlpatterns = [
      #path("project_model_update/", views.project_model_update),
      path("add_project/", project_views.add_project),
      path("edit_project/<int:pid>/", project_views.edit_project),
+     path("search_project/", project_views.search_project),
      path("del_project/", project_views.del_project),
      path("add_module/", module_views.add_module),
      path("edit_module/<int:pid>/", module_views.edit_module),
      path("del_module/", module_views.del_module),
+     path("search_module/", module_views.search_module),
 
 ]

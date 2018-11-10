@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, HttpResponse
-from project_app import html_hepler
-from project_app.models import Project
+
+from common.page_help import page
 from project_app.forms import ProjectForm
+from project_app.models import Project
 
 # Create your views here.
 
@@ -19,32 +20,24 @@ def try_int(arg,default):
 
 @login_required #判断用户是否登录
 def project_manage(request):
-    '''
-    首页跳转，判断参数是否为空，如果为空，查询所有数据，否则查询匹配数据
-    '''
-    page = request.GET.get('page')
+    '''项目列表'''
 
-    page = try_int(page, 1)
+    project_data = Project.objects.all().order_by("-create_time")
 
-    count = Project.objects.all().count()
+    contacts = page(request,project_data)
 
-    pageObj = html_hepler.PageInfo(page, count)
-
-    content = request.POST.get('search_project')
-
-    if content is not None:
-        project_data = Project.objects.filter(
-                title__contains=content)
-    else:
-        project_data = Project.objects.all()[pageObj.start:pageObj.end]
-
-    #project_data = Project.objects.all()[pageObj.start:pageObj.end]
-
-    page_string = html_hepler.Pager(page, pageObj.all_page_count)
     username = request.session.get('user1', '')  # 读取浏览器 session
-    return render(request, "project_manage.html", {"user": username,"project_data":project_data,
-                                                   "page": page_string,"type":"list"})
-
+    return render(request, "project_manage.html", {"user": username,"contacts":contacts,
+                                                   "type":"list"})
+def search_project(request):
+    if request.method == "GET":
+        search_project = request.GET.get("search_project","")
+        project_data = Project.objects.filter(title__icontains=search_project)
+        contacts = page(request, project_data)
+        return render(request, "project_manage.html",
+                      {"type": "list", "contacts": contacts, "search_project": search_project})
+    else:
+        return "404"
 # @login_required
 # def project_model(request):
 #     '''

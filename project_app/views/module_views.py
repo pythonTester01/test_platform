@@ -1,49 +1,32 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, HttpResponse
-from project_app import html_hepler
+from common.page_help import page
+from project_app.forms import ModuleForm
 from project_app.models import Model
-from project_app.forms import ProjectForm,ModuleForm
 
 # Create your views here.
 
-'''
-默认值转换为int
-'''
-def try_int(arg,default):
-    try:
-        arg = int(arg)
-    except Exception as e:
-        arg = default
-    return arg
-
 @login_required #判断用户是否登录
 def module_manage(request):
-    '''
-    首页跳转，判断参数是否为空，如果为空，查询所有数据，否则查询匹配数据
-    '''
-    page = request.GET.get('page')
+    '''模块列表页'''
 
-    page = try_int(page, 1)
+    module_data = Model.objects.all().order_by("-create_time")
 
-    count = Model.objects.all().count()
+    contacts = page(request,module_data)
 
-    pageObj = html_hepler.PageInfo(page, count)
-
-    content = request.POST.get('search_project')
-
-    if content is not None:
-        project_data = Model.objects.filter(
-                name__contains=content)
-    else:
-        project_data = Model.objects.all()[pageObj.start:pageObj.end]
-
-    #project_data = Project.objects.all()[pageObj.start:pageObj.end]
-
-    page_string = html_hepler.Pager(page, pageObj.all_page_count)
     username = request.session.get('user1', '')  # 读取浏览器 session
-    return render(request, "module_manage.html", {"user": username,"project_data":project_data,
-                                                   "page": page_string,"type":"list"})
+    return render(request, "module_manage.html", {"contacts":contacts,"type":"list","username":username})
+
+def search_module(request):
+    '''模块搜索功能'''
+    if request.method == "GET":
+        search_module = request.GET.get("search_module", "")
+        module_data = Model.objects.filter(name__icontains=search_module)
+        contacts = page(request, module_data)
+        return render(request, "case_manage.html", {"type": "list", "contacts": contacts, "search_module": search_module})
+    else:
+        return "404"
 
 
 @login_required
