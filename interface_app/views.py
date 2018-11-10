@@ -6,7 +6,8 @@ from django.contrib.auth.decorators import login_required
 from project_app.models import Model
 from interface_app.models import TestCase
 from interface_app.forms import TestCaseForm
-from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
+#from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
+from common.page_help import page
 # Create your views here.
 
 @login_required
@@ -15,16 +16,28 @@ def case_manage(request):
     if request.method == "GET":
         case_list = TestCase.objects.all().order_by("name")
 
-        paginator = Paginator(case_list,5)
-
-        page = request.GET.get("page")
-        try:
-            contacts = paginator.get_page(page)
-        except EmptyPage:
-            contacts = paginator.page(1)
-        except PageNotAnInteger:
-            contacts = paginator.page(paginator.num_pages)
+        contacts = page(request,case_list)
+        # paginator = Paginator(case_list,5)
+        #
+        # page = request.GET.get("page")
+        # try:
+        #     contacts = paginator.get_page(page)
+        # except EmptyPage:
+        #     contacts = paginator.page(1)
+        # except PageNotAnInteger:
+        #     contacts = paginator.page(paginator.num_pages)
         return render(request,"case_manage.html",{"type":"list","contacts": contacts})
+    else:
+        return "404"
+
+@login_required
+def search_case(request):
+    '''用例搜索功能'''
+    if request.method == "GET":
+        search_case = request.GET.get("search_case","")
+        case_data = TestCase.objects.filter(name__icontains = search_case)
+        contacts = page(request,case_data)
+        return  render(request,"case_manage.html",{"type":"list","contacts": contacts,"search_case":search_case})
     else:
         return "404"
 
@@ -37,9 +50,6 @@ def api_debug(request):
         par_type = request.POST.get("par_type") #data json
         api_header = request.POST.get("api_header")
         api_parameter = request.POST.get("api_parameter")
-
-
-
 
         if api_header == "":
             api_header = "{}"
@@ -144,5 +154,4 @@ def edit_case(request,mid):
 
 
     return render(request, "api_edit_debug.html", {"type": "edit", "form": form, "id": mid})
-    #return render(request, "api_debug.html", {"type": "edit", "form": form, "id": mid})
 

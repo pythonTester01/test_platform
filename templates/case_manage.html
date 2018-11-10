@@ -40,9 +40,9 @@
                   </div>
                    <div class="btn-group pull-right">
                          <div class="dataTables_filter" id="example_filter">
-                             <form method="post" action="/manage/module_manage/">
+                             <form method="get" action="/interface/search_case/">
                               <input class="btn" type="submit" value="搜索">
-                              <label><input type="text" aria-controls="example" id="search_project" name="search_project"></label>
+                              <label><input type="text" aria-controls="example" id="search_case" name="search_case"></label>
                              </form>
                         </div>
                     </div>
@@ -85,16 +85,16 @@
             <span class="step-links">
               <ul class="pagination">
                 {% if contacts.has_previous %}
-                  <li><a href="?page={{ contacts.previous_page_number }}">&laquo;</a></li>
+                  <li><a href="?search_case={{ search_case }}&page={{ contacts.previous_page_number }}">&laquo;</a></li>
                 {% endif %}
 
                  <li><a href="#">{{ contacts.number }}</a></li>
 
                 {% if contacts.has_next %}
                   {% if phone %}
-                    <li><a href="?&page={{ contacts.next_page_number }}">&raquo;</a></li>
+                    <li><a href="?search_case={{ search_case }}&page={{ contacts.next_page_number }}">&raquo;</a></li>
                   {% else %}
-                   <li><a href="?page={{ contacts.next_page_number }}">&raquo;</a></li>
+                   <li><a href="?search_case={{ search_case }}&page={{ contacts.next_page_number }}">&raquo;</a></li>
                   {% endif %}
                 {% endif %}
                 <li><a href="#">共：{{ contacts.paginator.num_pages }} 页</a></li>
