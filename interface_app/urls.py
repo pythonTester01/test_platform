@@ -21,11 +21,12 @@ from interface_app import views
 urlpatterns = [
      path("case_manage/", views.case_manage),
      path("api_debug/", views.api_debug),
-     path("debug/", views.debug),
+     path("add_case/", views.add_case),
      path("save_case/", views.save_case),
      path("del_case/", views.del_case),
      path("edit_case/<int:mid>/", views.edit_case),
      path("search_case/", views.search_case),
+     path("get_case_info/", views.get_case_info),
 
 
 ]

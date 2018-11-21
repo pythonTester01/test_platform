@@ -7,7 +7,7 @@
 </style>
 
 <fieldset>
-<form class="form-horizontal"　 action="/interface/edit_case/{{id}}/" method="post">
+<form class="form-horizontal"　 action="" method="post">
     <div class="control-group">
 
           <!-- Text input-->
@@ -22,8 +22,9 @@
           <!-- Text input-->
           <label class="control-label">名称：</label>
           <div class="controls">
-              {{form.name}}
-            <!--<input type="text" id="api_name" class="input-xlarge" style="width: 77%">-->
+              <!--{{form.name}}-->
+            <input type="text" id="api_name" class="input-xlarge" style="width: 77%">
+            <input type="hidden" id="mid" value="{{mid}}" class="input-xlarge" style="width: 77%">
             <p class="help-block"></p>
           </div>
     </div>
@@ -32,8 +33,8 @@
           <!-- Text input-->
           <label class="control-label">URL：</label>
           <div class="controls">
-              {{form.url}}
-              <!--<input type="text"  id="api_url" class="input-xlarge" style="width: 77%">-->
+              <!--{{form.url}}-->
+              <input type="text"  id="api_url" class="input-xlarge" style="width: 77%">
             <p class="help-block"></p>
           </div>
     </div>
@@ -83,8 +84,8 @@
           <!-- Text input-->
           <label class="control-label">Header：</label>
           <div class="controls">
-              {{form.req_header}}
-            <!--<input type="text" id="api_header" class="input-xlarge" style="width: 77%">-->
+              <!--{{form.req_header}}-->
+            <input type="text" id="api_header" class="input-xlarge" style="width: 77%">
             <p class="help-block" style="color:#8B8989">说明：以字典的方式设置参数，如：{"content-type": "application/json"}</p>
           </div>
     </div>
@@ -93,8 +94,8 @@
           <!-- Text input-->
           <label class="control-label">参数： </label>
           <div class="controls">
-              {{form.req_para}}
-            <!--<input type="text" id="api_parameter" class="input-xlarge" style="width: 77%">-->
+              <!--{{form.req_para}}-->
+            <input type="text" id="api_parameter" class="input-xlarge" style="width: 77%">
             <p class="help-block" style="color:#8B8989">说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}</p>
           </div>
     </div>
@@ -124,46 +125,51 @@
     <p></p>
     <p></p>
 </fieldset>
-
+<script src="/static/mycase.js"></script>
 <script src="/static/vendors/jquery-1.9.1.js"></script>
 <script type="text/javascript">
 
            $(document).ready(function(){
-            $("#send").click(function(){
-                alert("111");
-                //var api_name = $("#api_name").val();
-                var api_url = $("#api_url").val();
-                var req_mode =  $("input[name='req_mode']:checked").val();
-                var par_type =  $("input[name='parameter']:checked").val();
-                var api_header = $("#api_header").val();
-                var api_parameter = $("#api_parameter").val();
 
-                if(api_url ==""){
-                    alert("URL不能为空！");
-                }
+               var mid = $("#mid").val();
 
-                if(api_parameter==""){
-                    api_parameter="{}" ;
-                }
-                $.ajax({
-                      type: 'POST',
-                      url: '/interface/api_debug/',
-                      data: {
-                            "api_url":api_url,
-                            "req_mode":req_mode,
-                            "par_type":par_type,
-                            "api_header":api_header,
-                            "api_parameter":api_parameter
-                      },
-                      async : false,
-                      //dataType: 'json',
-                      success: function (data) {
+               CaseInit(mid);
+               $("#send").click(function(){
+                    //alert("111");
+                    //var api_name = $("#api_name").val();
+                    var api_url = $("#api_url").val();
+                    var req_mode =  $("input[name='req_mode']:checked").val();
+                    var par_type =  $("input[name='parameter']:checked").val();
+                    var api_header = $("#api_header").val();
+                    var api_parameter = $("#api_parameter").val();
 
-                          $("#result").html(data);
-                          //alert(data);
-                      },
-                  });
-                })
+                    if(api_url ==""){
+                        alert("URL不能为空！");
+                    }
+
+                    if(api_parameter==""){
+                        api_parameter="{}" ;
+                    }
+                    $.ajax({
+                          type: 'POST',
+                          url: '/interface/api_debug/',
+                          data: {
+                                "api_url":api_url,
+                                "req_mode":req_mode,
+                                "par_type":par_type,
+                                "api_header":api_header,
+                                "api_parameter":api_parameter
+                          },
+                          async : false,
+                          //dataType: 'json',
+                          success: function (data) {
+
+                              $("#result").html(data);
+                              //alert(data);
+                          },
+                      });
+                    })
+
             })
 </script>
 {% endblock %}

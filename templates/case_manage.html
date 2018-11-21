@@ -36,7 +36,7 @@
                <div class="table-toolbar">
                   <div class="btn-group">
                      <!--<a><button class="btn btn-success" onclick="window.location.href='/interface/debug/'">&nbsp&nbsp&nbsp调&nbsp&nbsp试&nbsp&nbsp<i class="icon-plus icon-white"></i>&nbsp</button></a>-->
-                     <a><button class="btn btn-success" onclick="window.location.href='/interface/debug/'">&nbsp&nbsp&nbsp调&nbsp&nbsp试&nbsp&nbsp<i class="icon-plus icon-white"></i>&nbsp</button></a>
+                     <a><button class="btn btn-success" onclick="window.location.href='/interface/add_case/'">&nbsp&nbsp&nbsp新&nbsp&nbsp增&nbsp&nbsp<i class="icon-plus icon-white"></i>&nbsp</button></a>
                   </div>
                    <div class="btn-group pull-right">
                          <div class="dataTables_filter" id="example_filter">
@@ -73,7 +73,7 @@
                             <td class="center" style="width: 60px;">
                                 <a onclick="del_id('{{ data.id }}')"><i class="icon-remove"></i></a>
                                 &nbsp;&nbsp;&nbsp;
-                                <a href="/interface/edit_case/{{ data.id }}/"><i class="icon-pencil"></i></a>
+                                <a href="/interface/edit_case/{{data.id}}"><i class="icon-pencil"></i></a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -107,7 +107,7 @@
     </div>
 </div>
  {% endif %}
-{% if type == "debug" %}
+{% if type == "add_case" %}
 <div class="block">
     <div class="navbar navbar-inner block-header">
         <div class="muted pull-left">在线POSTMAN</div>
@@ -124,7 +124,7 @@
 {% if type == "edit" %}
 <div class="block">
     <div class="navbar navbar-inner block-header">
-        <div class="muted pull-left">在线POSTMAN</div>
+        <div class="muted pull-left">调试用例</div>
     </div>
     <div class="block-content collapse in">
         <div class="span12">
@@ -135,28 +135,31 @@
     </div>
 </div>
 {% endif %}
+<script src="/static/mycase.js"></script>
 <script src="/static/vendors/jquery-1.9.1.js"></script>
 <script>
-              function del_id(id) {
-                  //alert(11);
-                  //id1 = $("#del_id").val();
-                  //alert(id);
-                  $.ajax({
-                      type: 'POST',
-                      url: '/interface/del_case/',
-                      data: {"id": id},
-                      //async : false,
-                      //dataType: 'json',
-                      success: function (data) {
-                          if (data == "1") {
-                              alert("删除成功！");
-                              window.location.reload();
-                          }
-                      },
-                      error: function () {
-                      }
-                  });
 
+
+
+
+    function del_id(id) {
+
+      $.ajax({
+          type: 'POST',
+          url: '/interface/del_case/',
+          data: {"id": id},
+          //async : false,
+          //dataType: 'json',
+          success: function (data) {
+              if (data == "1") {
+                  alert("删除成功！");
+                  window.location.reload();
               }
+          },
+          error: function () {
+          }
+      });
+
+  }
         </script>
 {% endblock context %}

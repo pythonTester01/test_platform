@@ -5,6 +5,7 @@ from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from project_app.models import Model
 from interface_app.models import TestCase
+from project_app.models import Project,Model
 from interface_app.forms import TestCaseForm
 #from django.core.paginator import Paginator,EmptyPage, PageNotAnInteger
 from common.page_help import page
@@ -78,11 +79,11 @@ def api_debug(request):
 
 #创建接口
 @login_required
-def debug(request):
+def add_case(request):
     if request.method == "GET":
         form = TestCaseForm()
-        return render(request, "api_debug.html", {
-            "type": "debug","form":form
+        return render(request, "add_case.html", {
+            "type": "add_case","form":form
         })
     else:
         return HttpResponse("404")
@@ -131,27 +132,43 @@ def del_case(request):
 
 @login_required
 def edit_case(request,mid):
-    '''项目用例功能'''
-    if request.method == "POST":
-        form = TestCaseForm(request.POST)
-        if form.is_valid():
-            eid = form.cleaned_data["eid"]
-            print(eid)
-            module_obj = Model.objects.get(id=eid)
-            module = form.cleaned_data[module_obj],
-            name = form.cleaned_data["api_name"]
-            url = form.cleaned_data["api_url"]
-            req_methed = form.cleaned_data["req_mode"]
-            req_type = form.cleaned_data["par_type"]
-            req_header = form.cleaned_data["api_header"]
-            req_para = form.cleaned_data["api_parameter"]
-            TestCase.objects.filter(id=mid).update(module=module, name=name, url=url,req_methed=req_methed
-                    ,req_type=req_type,req_header=req_header,req_para=req_para)
-            return HttpResponseRedirect('/interface/case_manage/')
+    '''编辑/调试用例功能'''
+    if request.method == "GET":
+        print(mid)
+        form = TestCaseForm()
+        return render(request, "api_edit_debug.html",
+                      {"type": "edit", "form": form, "mid": mid})
     else:
-        if mid:
-            form = TestCaseForm(instance = TestCase.objects.filter(id=mid).first())
+        return HttpResponse("404")
 
 
-    return render(request, "api_edit_debug.html", {"type": "edit", "form": form, "id": mid})
+def get_case_info(request):
 
+    if request.method=="POST":
+        case_Id = request.POST.get('caseId',"")
+        print(case_Id)
+        if case_Id =="":
+            return JsonResponse({'success':'flase','message':'ID is null!'})
+
+        case_obj = TestCase.objects.get(pk=case_Id)
+
+        module_obj = Model.objects.get(id=case_obj.module_id)
+
+        module_name = module_obj.name  # 模块名称
+
+        project_name = Project.objects.get(id=module_obj.project_id).title  # 项目名称
+
+        case_info = {"moduleName": module_name,
+                     "projectName": project_name,
+                     "name": case_obj.name,
+                     "url": case_obj.url,
+                     "reqMethod": case_obj.req_methed,
+                     "reqType": case_obj.req_type,
+                     "reqHeader": case_obj.req_header,
+                     "reqParameter": case_obj.req_para,
+                     #"assertText": case_obj.resp_assert,
+                     }
+
+        return JsonResponse({'success':'true','message':'ok','data':case_info})
+    else:
+        HttpResponse('404')
