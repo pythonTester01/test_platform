@@ -9,11 +9,18 @@
 <fieldset>
 <form class="form-horizontal"　 action="" method="post">
     <div class="control-group">
-
+          <!-- Text input-->
+          <label class="control-label">项目名称：</label>
+          <div class="controls">
+            <select id="project_name"></select>
+            <p class="help-block"></p>
+          </div>
+    </div>
+    <div class="control-group">
           <!-- Text input-->
           <label class="control-label">所属模块：</label>
           <div class="controls">
-                {{ form.module}}
+            <select id="module_name"></select>
             <p class="help-block"></p>
           </div>
     </div>
@@ -99,15 +106,25 @@
             <p class="help-block" style="color:#8B8989">说明：以字典的方式设置参数，如：{"id":1, "name":"名称"}</p>
           </div>
     </div>
-
+     <div class="control-group">
+          <label class="control-label">预期结果：</label>
+          <!-- Button -->
+          <div class="controls">
+              <div class="textarea">
+                  <textarea id="assert_text" class="form-control" rows="10"> </textarea>
+            </div>
+          </div>
+    </div>
     <div class="control-group">
           <label class="control-label">操作：</label>
           <!-- Button -->
           <div class="controls">
             <button class="btn btn-success" id="send" type="button">调试</button>
-            <button class="btn btn-success" id="update" type="submit">更新</button>
+            <button class="btn btn-success" id="update" type="button">更新</button>
+            <button class="btn btn-success" id="assert" type="button">验证</button>
           </div>
     </div>
+
 </form>
 
 
@@ -125,6 +142,7 @@
     <p></p>
     <p></p>
 </fieldset>
+<script src="/static/project.js"></script>
 <script src="/static/mycase.js"></script>
 <script src="/static/vendors/jquery-1.9.1.js"></script>
 <script type="text/javascript">
@@ -170,7 +188,64 @@
                       });
                     })
 
-            })
+             // 更新
+        $("#update").click(function () {
+            var module_name = $('select[id="module_name"]').val();
+            var name = $("#api_name").val();
+            var url = $("#api_url").val();
+            var method = $('input[name="req_mode"]:checked').val();
+            var parameter = $("#api_parameter").val();
+            var req_type = $('input[name="parameter"]:checked').val();
+            var header = $("#api_header").val();
+            var assert_text = $("#assert_text").val();
+            //window.alert(assert_text);
+            if (name === "") {
+                window.alert("名称不能为空");
+            }else if (url === "") {
+                window.alert("请求的URL不能为空");
+            } else if (method === "") {
+                window.alert("请求的方法不能为空");
+            } else if (parameter === "") {
+                parameter = "{}";
+            }
+            // 保存用例接口
+            $.post("/interface/update_case/", {
+                "cid": mid,
+                "name": name,
+                "req_url": url,
+                "req_method": method,
+                "req_parameter": parameter,
+                "req_type": req_type,
+                "header": header,
+                "module": module_name,
+                "assert_text": assert_text,
+            }, function (resp) {
+                if(resp.success === "true"){
+                    window.alert(resp.message);
+                }else{
+                    window.alert(resp.message);
+                }
+            });
+        });
+        //验证数据接口
+        $("#assert").click(function () {
+            let result = $("#result").val();
+            let assert = $("#assert_text").val();
+            if (result === "" || assert === "") {
+                window.alert("验证数据不能为空！");
+            }
+            //window.alert("发送请求");
+            // 发送一个post请求
+            $.post("/interface/api_assert/", {
+                "result": result,
+                "assert": assert,
+            }, function (resp) {
+                //console.log("6666", resp);
+                window.alert(resp.message);
+            });
+        });
+
+       })
 </script>
 {% endblock %}
 

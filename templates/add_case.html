@@ -11,9 +11,18 @@
     <div class="control-group">
 
           <!-- Text input-->
+          <label class="control-label">项目名称：</label>
+          <div class="controls">
+            <select id="project_name"></select>
+            <p class="help-block"></p>
+          </div>
+    </div>
+    <div class="control-group">
+
+          <!-- Text input-->
           <label class="control-label">所属模块：</label>
           <div class="controls">
-                {{ form.module}}
+            <select id="module_name"></select>
             <p class="help-block"></p>
           </div>
     </div>
@@ -122,10 +131,11 @@
     <p></p>
     <p></p>
 </fieldset>
-
+<script src="/static/project.js"></script>
 <script src="/static/vendors/jquery-1.9.1.js"></script>
 <script type="text/javascript">
-
+           // 初始化项目模块选择框
+           ProjectInit('project_name', 'module_name');
            $(document).ready(function(){
             $("#send").click(function(){
                 alert("111");

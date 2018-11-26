@@ -31,7 +31,7 @@ var CaseInit = function (case_id) {
                 // window.alert(result.moduleName);
 
                 // 初始化菜单
-                //ProjectInit('project_name', 'module_name', result.projectName, result.moduleName);
+                ProjectInit('project_name', 'module_name', result.projectName, result.moduleName);
 
             }else{
                 window.alert("用例id不存在");

@@ -27,6 +27,9 @@ urlpatterns = [
      path("edit_case/<int:mid>/", views.edit_case),
      path("search_case/", views.search_case),
      path("get_case_info/", views.get_case_info),
+     path("get_project_list/", views.get_project_list),
+     path("update_case/", views.update_case),
+     path("api_assert/", views.api_assert),
 
 
 ]
