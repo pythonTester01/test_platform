@@ -16,9 +16,9 @@ from test_platform import common
 def case_manage(request):
 
     if request.method == "GET":
-        case_list = TestCase.objects.all().order_by("-create_time")
+        task_list = TestCase.objects.all().order_by("-create_time")
 
-        contacts = page(request,case_list)
+        contacts = page(request,task_list)
         # paginator = Paginator(case_list,5)
         #
         # page = request.GET.get("page")
@@ -257,5 +257,25 @@ def api_assert(request):
             return common.response_failed("验证失败!")
         else:
             return common.response_succeed("验证成功!")
+    else:
+        return common.response_failed("请求方法错误")
+
+
+'''获取项目列表'''
+def get_case_list(request):
+    """获取项目用例列表"""
+    if request.method == "GET":
+        project_list = Project.objects.all()
+        case_list = []
+        for project in project_list:
+            module_list = Model.objects.filter(project_id = project.id)
+            for module in module_list:
+                cases = TestCase.objects.filter(module_id = module.id)
+                for case in cases:
+                    if len(case)!=0:
+                        case_info = project.title +">"+module.name+">"+case.mane
+                        case_list.append(case_info)
+        return common.response_succeed(data=case_list)
+
     else:
         return common.response_failed("请求方法错误")

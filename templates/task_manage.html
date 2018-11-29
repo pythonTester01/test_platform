@@ -9,10 +9,10 @@
         <li>
             <a href="/manage/module_manage/"><i class="icon-chevron-right"></i>模块管理</a>
         </li>
-        <li class="active">
+        <li>
             <a href="/interface/case_manage/"><i class="icon-chevron-right"></i>用例管理</a>
         </li>
-        <li>
+        <li class="active">
             <a href="/interface/task_manage/"><i class="icon-chevron-right"></i>任务管理</a>
         </li>
         <li>
@@ -29,18 +29,18 @@
 {% if type == 'list'%}
      <div class="block">
         <div class="navbar navbar-inner block-header">
-            <div class="muted pull-left">用例管理</div>
+            <div class="muted pull-left">任务列表</div>
         </div>
         <div class="block-content collapse in">
             <div class="span12">
                <div class="table-toolbar">
                   <div class="btn-group">
                      <!--<a><button class="btn btn-success" onclick="window.location.href='/interface/debug/'">&nbsp&nbsp&nbsp调&nbsp&nbsp试&nbsp&nbsp<i class="icon-plus icon-white"></i>&nbsp</button></a>-->
-                     <a><button class="btn btn-success" onclick="window.location.href='/interface/add_case/'">&nbsp&nbsp&nbsp新&nbsp&nbsp增&nbsp&nbsp<i class="icon-plus icon-white"></i>&nbsp</button></a>
+                     <a><button class="btn btn-success" onclick="window.location.href='/interface/add_task/'">&nbsp&nbsp&nbsp新&nbsp&nbsp增&nbsp&nbsp<i class="icon-plus icon-white"></i>&nbsp</button></a>
                   </div>
                    <div class="btn-group pull-right">
                          <div class="dataTables_filter" id="example_filter">
-                             <form method="get" action="/interface/search_case/">
+                             <form method="get" action="/interface/search_task/">
                               <input class="btn" type="submit" value="搜索">
                               <label><input type="text" aria-controls="example" id="search_case" name="search_case"></label>
                              </form>
@@ -51,11 +51,9 @@
                     <thead>
                         <tr>
                             <th>序号</th>
-                            <th>用例名称</th>
-                            <th>URL</th>
-                            <th>请求方式</th>
-                            <th>参数</th>
-                            <th>预期结果</th>
+                            <th>任务名称</th>
+                            <th>描述</th>
+                            <th>状态</th>
                             <th>创建时间</th>
                             <th>操作</th>
                         </tr>
@@ -65,10 +63,16 @@
                         <tr class="gradeU">
                             <td>{{forloop.counter }}</td>
                             <td class="center">{{data.name}}</td>
-                            <td>{{data.url}}</td>
-                            <td>{{data.req_methed}}</td>
-                            <td>{{data.req_para}}</td>
-                            <td>{{data.response_assert}}</td>
+                            <td>{{data.describe}}</td>
+                            {% if data.status == 0 %}
+                            <td>未执行</td>
+                            {% endif %}
+                            {% if data.status == 1 %}
+                            <td>执行中</td>
+                            {% endif %}
+                            {% if data.status == 2 %}
+                            <td>已执行</td>
+                            {% endif %}
                             <td class="center">{{ data.create_time | date:"Y-m-d H:i:s" }}</td>
                             <td class="center" style="width: 60px;">
                                 <a onclick="del_id('{{ data.id }}')"><i class="icon-remove"></i></a>
@@ -107,7 +111,7 @@
     </div>
 </div>
  {% endif %}
-{% if type == "add_case" %}
+{% if type == "add_task" %}
 <div class="block">
     <div class="navbar navbar-inner block-header">
         <div class="muted pull-left">在线POSTMAN</div>

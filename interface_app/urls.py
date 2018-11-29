@@ -15,21 +15,29 @@ Including another URLconf
 """
 from django.urls import path
 
-from interface_app import views
+from interface_app.views import testask_view
+from interface_app.views import testcase_view
 
 
 urlpatterns = [
-     path("case_manage/", views.case_manage),
-     path("api_debug/", views.api_debug),
-     path("add_case/", views.add_case),
-     path("save_case/", views.save_case),
-     path("del_case/", views.del_case),
-     path("edit_case/<int:mid>/", views.edit_case),
-     path("search_case/", views.search_case),
-     path("get_case_info/", views.get_case_info),
-     path("get_project_list/", views.get_project_list),
-     path("update_case/", views.update_case),
-     path("api_assert/", views.api_assert),
+     #测试用例
+     path("case_manage/", testcase_view.case_manage),
+     path("api_debug/", testcase_view.api_debug),
+     path("add_case/", testcase_view.add_case),
+     path("save_case/", testcase_view.save_case),
+     path("del_case/", testcase_view.del_case),
+     path("edit_case/<int:mid>/", testcase_view.edit_case),
+     path("search_case/", testcase_view.search_case),
+     path("get_case_info/", testcase_view.get_case_info),
+     path("get_project_list/", testcase_view.get_project_list),
+     path("update_case/", testcase_view.update_case),
+     path("api_assert/", testcase_view.api_assert),
 
+     #测试任务
+     path("task_manage/", testask_view.task_manage),
+     path("add_task/", testask_view.add_task),
+
+     #任务管理-由JS调用
+     path("get_case_list/", testcase_view.get_case_list),
 
 ]
