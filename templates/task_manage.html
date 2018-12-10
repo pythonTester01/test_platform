@@ -111,14 +111,14 @@
     </div>
 </div>
  {% endif %}
-{% if type == "add_task" %}
+{% if type == "add" %}
 <div class="block">
     <div class="navbar navbar-inner block-header">
-        <div class="muted pull-left">在线POSTMAN</div>
+        <div class="muted pull-left">新增任务</div>
     </div>
     <div class="block-content collapse in">
         <div class="span12">
-            {% block debug %}
+            {% block add_task %}
 
             {% endblock %}
         </div>

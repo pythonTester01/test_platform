@@ -1,5 +1,5 @@
 {% extends "task_manage.html" %}
-{% block debug %}
+{% block add_task %}
 <style>
     fieldset {margin-top: 2%}
     label {vertical-align:middle;display:inline-block;}
@@ -29,14 +29,14 @@
     <div class="control-group">
           <!-- Text input-->
           <label class="control-label">用例：</label>
-          <div class="controls">
-            <input type="text"  id="case" class="input-xlarge" style="width: 77%">
-            <p class="help-block"></p>
+          <input type="checkbox" id="selectAll">全选/取消</input>
+          <div class="caseList" style="overflow-y:scroll; height: 200px; background: #FFFFFF; padding-left: 15px;">
+
           </div>
     </div>
 
     <div class="form-actions">
-          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" id="saveTask" class="btn btn-primary">保存</button>
           <button type="reset" class="btn" onclick="window.location.href='/manage/task_manage/'">取消</button>
     </div>
 </form>
@@ -44,88 +44,64 @@
 
 
 </fieldset>
-<script src="/static/project.js"></script>
+<script src="/static/mycase.js"></script>
 <script src="/static/vendors/jquery-1.9.1.js"></script>
 <script type="text/javascript">
-           // 初始化项目模块选择框
-           ProjectInit('project_name', 'module_name');
-           $(document).ready(function(){
-            $("#send").click(function(){
-                alert("111");
-                //var api_name = $("#api_name").val();
-                var api_url = $("#api_url").val();
-                var req_mode =  $("input[name='req_mode']:checked").val();
-                var par_type =  $("input[name='parameter']:checked").val();
-                var api_header = $("#api_header").val();
-                var api_parameter = $("#api_parameter").val();
+           // 初始化用例列表
+           CaseListInit()
+           $("#saveTask").click(function () {
 
-                if(api_url ==""){
-                    alert("URL不能为空！");
-                }
+		var tName = $("#task_name").val();
+		var tDescribe = $("#describe").val();
 
-                if(api_parameter==""){
-                    api_parameter="{}" ;
-                }
-                $.ajax({
-                      type: 'POST',
-                      url: '/interface/api_debug/',
-                      data: {
-                            "api_url":api_url,
-                            "req_mode":req_mode,
-                            "par_type":par_type,
-                            "api_header":api_header,
-                            "api_parameter":api_parameter
-                      },
-                      async : false,
-                      //dataType: 'json',
-                      success: function (data) {
+		if (tName === "") {
+			window.alert("任务的名称不能为空！");
+		}
 
-                          $("#result").html(data);
-                          //alert(data);
-                      },
-                  });
-                })
-               $("#save").click(function(){
-                var mid = $("select[name='module']").val();
-                var api_name = $("#api_name").val();
-                var api_url = $("#api_url").val();
-                var req_mode =  $("input[name='req_mode']:checked").val();
-                var par_type =  $("input[name='parameter']:checked").val();
-                var api_header = $("#api_header").val();
-                var api_parameter = $("#api_parameter").val();
+		var selectCases = document.querySelectorAll("div.caseList > input");
 
+		var selectCasesId = "";
+		for (var i = 0; i < selectCases.length; i++) {
+            //判断是否被选中
+			if (selectCases[i].checked === true){
+                //被选中的ID
+				var case_id = selectCases[i].value;
+				selectCasesId = selectCasesId + case_id + ","
+			}
+		}
 
-                if(api_name ==""){
-                    alert("名称不能为空！")
-                }
-                if(api_url ==""){
-                    alert("URL不能为空！");
-                }
+		console.log("选中的用例id", selectCasesId);
 
-                if(api_parameter==""){
-                    api_parameter="{}" ;
-                }
-                $.ajax({
-                      type: 'POST',
-                      url: '/interface/save_case/',
-                      data: {"mid":mid,
-                            "api_name":api_name,
-                            "api_url":api_url,
-                            "req_mode":req_mode,
-                            "par_type":par_type,
-                            "api_header":api_header,
-                            "api_parameter":api_parameter
-                      },
-                      async : false,
-                      //dataType: 'json',
-                      success: function (data) {
+		$.post("/interface/save_task_data/", {
+			"task_name": tName,
+			"task_describe": tDescribe,
+			"task_cases": selectCasesId,
+		}, function (resp) {
+			if (resp.success === "true"){
+				window.alert(resp.message);
+			}else{
+				window.alert(resp.message);
+			}
+		});
 
-                          //$("#result").html(data);
-                          alert("保存成功！");
-                      },
-                  });
-                })
-            })
+	});
+
+	// 保存任务
+	$("#selectAll").click(function () {
+
+		var selectAll = document.querySelector("#selectAll");
+		var allCases = document.querySelectorAll(".caseList > input");
+		if(selectAll.checked === true){
+			for(let i=0; i < allCases.length; i++){
+				allCases[i].checked = true;
+			}
+		}else{
+			for (let i = 0; i < allCases.length; i++) {
+				allCases[i].checked = false;
+			}
+		}
+	});
+
 </script>
 {% endblock %}
 

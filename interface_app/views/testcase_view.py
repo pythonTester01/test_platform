@@ -272,9 +272,12 @@ def get_case_list(request):
             for module in module_list:
                 cases = TestCase.objects.filter(module_id = module.id)
                 for case in cases:
-                    if len(case)!=0:
-                        case_info = project.title +">"+module.name+">"+case.mane
-                        case_list.append(case_info)
+                    case_info = project.title +"->"+module.name+"->"+case.name
+                    case_dict ={
+                        "id":case.id,
+                        "name": case_info
+                    }
+                    case_list.append(case_dict)
         return common.response_succeed(data=case_list)
 
     else:

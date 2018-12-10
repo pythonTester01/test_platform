@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.urls import path
 
-from interface_app.views import testask_view
+from interface_app.views import testask_view,taks_api
 from interface_app.views import testcase_view
 
 
@@ -37,7 +37,9 @@ urlpatterns = [
      path("task_manage/", testask_view.task_manage),
      path("add_task/", testask_view.add_task),
 
+
      #任务管理-由JS调用
      path("get_case_list/", testcase_view.get_case_list),
+     path("save_task_data/", taks_api.save_task_data),
 
 ]

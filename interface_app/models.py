@@ -23,7 +23,7 @@ class TestTask(models.Model):
     name = models.CharField("名称",max_length=50,default="")
     describe = models.TextField("描述", default="")
     cases = models.TextField("用例", default="")
-    status = models.IntegerField("状态",max_length=50,default="")
+    status = models.IntegerField("状态",default=0)
     #run_time =  models.DateTimeField("运行时间")
     create_time = models.DateTimeField("创建时间", auto_now=True)
 

@@ -43,3 +43,36 @@ var CaseInit = function (case_id) {
     getCaseInfo();
 
 };
+/**
+ * 获取用例列表
+ * */
+var CaseListInit = function () {
+
+    function getCaseListInfo() {
+        // 获取某个用例的信息
+        $.get("/interface/get_case_list", {
+
+        }, function (resp) {
+            if (resp.success === "true") {
+                console.log(resp.data);
+                var options="" ;
+                var cases = resp.data;
+                for(var i=0; i<cases.length; i++){
+                    var option='<input type="checkbox" name="'+cases[i].name+'" ' +
+                        'value="'+cases[i].id+'"/>'+cases[i].name +'<br/>'
+                    options=options + option;
+                }
+                console.log(options);
+                var DivCaseList = document.querySelector(".caseList");
+                DivCaseList.innerHTML= options;
+
+            }else{
+                window.alert("用例id不存在");
+            }
+            //$("#result").html(resp);
+        });
+    }
+    // 调用getCaseInfo函数
+    getCaseListInfo();
+
+};
