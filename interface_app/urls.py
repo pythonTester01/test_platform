@@ -36,10 +36,12 @@ urlpatterns = [
      #测试任务
      path("task_manage/", testask_view.task_manage),
      path("add_task/", testask_view.add_task),
+     path("run_task/<int:tid>", testask_view.run_task),
 
 
      #任务管理-由JS调用
      path("get_case_list/", testcase_view.get_case_list),
      path("save_task_data/", taks_api.save_task_data),
+     path("delete_task/", taks_api.delete_task),
 
 ]

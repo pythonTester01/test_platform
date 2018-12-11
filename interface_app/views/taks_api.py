@@ -29,3 +29,7 @@ def save_task_data(request):
     else:
         return common.response_failed("请求方法错误！")
 
+
+def delete_task(request):
+    pass
+
