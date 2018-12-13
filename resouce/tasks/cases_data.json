@@ -1,1 +1,1 @@
-{"12": {"req_type": "form", "req_header": "{}", "url": "https://api.github.com/events", "response_assert": "\"id\":\"8647720152\"", "req_para": "{}", "req_methed": "get"}}
+{"12": {"url": "https://api.github.com/events", "req_methed": "get", "req_header": "{}", "response_assert": "\"id\":\"8647720152\"", "req_type": "form", "req_para": "{}"}}

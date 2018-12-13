@@ -55,7 +55,7 @@
                             <th>描述</th>
                             <th>状态</th>
                             <th>创建时间</th>
-                            <th>操作</th>
+                            <th style="width: 90px">操作</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -75,9 +75,11 @@
                             {% endif %}
                             <td class="center">{{ data.create_time | date:"Y-m-d H:i:s" }}</td>
                             <td class="center" style="width: 60px;">
-                                <a onclick="del_id('{{ data.id }}')"><i class="icon-remove"></i></a>
+                                <a href="/interface/run_task/{{data.id}}"><i class="icon-play"></i></a>
                                 &nbsp;&nbsp;&nbsp;
                                 <a href="/interface/run_task/{{data.id}}"><i class="icon-pencil"></i></a>
+                                &nbsp;&nbsp;&nbsp;
+                                <a onclick="del_id('{{ data.id }}')"><i class="icon-remove"></i></a>
                             </td>
                         </tr>
                     {% endfor %}

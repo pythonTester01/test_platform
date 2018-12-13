@@ -46,10 +46,6 @@ class InterfaceTest(unittest.TestCase):
             elif req_type == "json":
                 r = requests.post(url, json=req_para)
 
-
-
-
-
 # 运行测试用例
 def run_cases():
     with open(TASK_PATH + 'results.xml', 'wb') as output:

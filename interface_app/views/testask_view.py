@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 
 from interface_app.models import TestTask,TestCase
 
-from interface_app.apps import TASK_PATH,RUN_TASK_FILE
+from interface_app.extend.task_thread import TaskThread
 
 from common.page_help import page
 
@@ -51,34 +51,7 @@ def add_task(request):
 def run_task(request,tid):
 
     if request.method == "GET":
-       task_obj = TestTask.objects.get(id=tid)
-
-       case_list = task_obj.cases.split(",")
-       case_list.pop(-1)
-       #运行函数
-       #run_cases()
-       cases_all ={}
-       for case_id in case_list:
-           print(case_id)
-           cases_obj = TestCase.objects.get(pk=case_id)
-
-           case_dict={
-               "url":cases_obj.url,
-               "req_methed":cases_obj.req_methed,
-               "req_type":cases_obj.req_type,
-               "req_header":cases_obj.req_header,
-               "req_para":cases_obj.req_para,
-               "response_assert":cases_obj.response_assert
-           }
-           cases_all[cases_obj.id]=case_dict
-       json_str = json.dumps(cases_all)
-       case_data_file = TASK_PATH + "cases_data.json"
-       with open(case_data_file,"w+") as f:
-           f.write(json_str)
-
-       #运行测试json文件
-       os.system("python3 "+RUN_TASK_FILE)
-
+       TaskThread(tid).run_new()
        return HttpResponseRedirect("/interface/task_manage/")
     else:
         return HttpResponse("404")
