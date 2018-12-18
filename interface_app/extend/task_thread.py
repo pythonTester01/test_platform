@@ -2,7 +2,7 @@ import json
 import os
 import threading
 from time import sleep
-from interface_app.models import TestTask,TestCase
+from interface_app.models import TestTask,TestCase,TestResult
 from interface_app.apps import TASK_PATH,RUN_TASK_FILE
 from xml.dom import minidom
 
@@ -82,10 +82,22 @@ class TaskThread():
         dom = minidom.parse(TASK_PATH +"results.xml")
         root = dom.documentElement
         ts = root.getElementsByTagName("testsuite")
+        name = ts[0].getAttribute("name")
+        errors = ts[0].getAttribute("errors")
+        failures = ts[0].getAttribute("failures")
+        skipped = ts[0].getAttribute("skipped")
+        tests = ts[0].getAttribute("tests")
+        run_time = ts[0].getAttribute("time")
+        # print("errors", ts[0].getAttribute("errors"))
+        # print("failures", ts[0].getAttribute("failures"))
+        # print("tests", ts[0].getAttribute("tests"))
 
+        with open((TASK_PATH +"results.xml"),"r",encoding="utf-8") as file:
+            result = file.read()
 
-        print("errors", ts[0].getAttribute("errors"))
-        print("fail", ts[0].getAttribute("failures"))
-        print("tests", ts[0].getAttribute("tests"))
 
         # TestResult.objects.create("") 保存到结果表里面
+        TestResult.objects.create(name=name,errors=errors,
+                                  failures=failures,skipped=skipped,
+                                  tests=tests,run_time=run_time,
+                                  task_id = self.tid,result=result)

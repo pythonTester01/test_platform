@@ -35,7 +35,7 @@ class TestResult(models.Model):
     #测试结果表
     name = models.CharField("名称",max_length=100,blank=False,default="")
     task = models.ForeignKey(TestTask, on_delete=models.CASCADE)
-    error = models.ImageField("错误用例")
+    errors = models.ImageField("错误用例")
     failures = models.ImageField("失败用例")
     skipped =  models.ImageField("跳过用例")
     tests = models.ImageField("总用例数")

@@ -77,7 +77,7 @@
                             <td class="center" style="width: 60px;">
                                 <a href="/interface/run_task/{{data.id}}"><i class="icon-play"></i></a>
                                 &nbsp;&nbsp;&nbsp;
-                                <a href="/interface/run_task/{{data.id}}"><i class="icon-pencil"></i></a>
+                                <a href="/interface/task_result_list/{{data.id}}"><i class="icon-list-alt"></i></a>
                                 &nbsp;&nbsp;&nbsp;
                                 <a onclick="del_id('{{ data.id }}')"><i class="icon-remove"></i></a>
                             </td>
@@ -127,14 +127,14 @@
     </div>
 </div>
 {% endif %}
-{% if type == "edit" %}
+{% if type == "result" %}
 <div class="block">
     <div class="navbar navbar-inner block-header">
-        <div class="muted pull-left">调试用例</div>
+        <div class="muted pull-left">任务结果查看</div>
     </div>
     <div class="block-content collapse in">
         <div class="span12">
-            {% block edit_debug %}
+            {% block task_result %}
 
             {% endblock %}
         </div>

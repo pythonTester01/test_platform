@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
-from interface_app.models import TestTask
+from interface_app.models import TestTask,TestResult
 from project_app.models import Project,Model
 
 
@@ -29,7 +29,21 @@ def save_task_data(request):
     else:
         return common.response_failed("请求方法错误！")
 
-
+@login_required
 def delete_task(request):
     pass
 
+@login_required
+def task_result(request):
+    '''任务结果'''
+    if request.method == "POST":
+        id = request.POST.get("id", "")
+
+        result_obj = TestResult.objects.get(id=id)
+
+        data={
+           "result":result_obj.result
+        }
+        return common.response_succeed(message="获取数据成功！",data=data)
+    else:
+        return common.response_failed(message="请求方法错误！")
