@@ -31,7 +31,10 @@ def save_task_data(request):
 
 @login_required
 def delete_task(request):
-    pass
+    if request.method == "POST":
+        id = request.POST.get("id", "")
+        TestTask.objects.filter(id=id).delete()
+        return HttpResponse("1")
 
 @login_required
 def task_result(request):
