@@ -27,8 +27,12 @@ def save_task_data(request):
 def delete_task(request):
     if request.method == "POST":
         id = request.POST.get("id", "")
+        if id == "":
+            return common.response_failed("删除失败，ID不存在")
         TestTask.objects.filter(id=id).delete()
-        return HttpResponse("1")
+        return common.response_succeed(message="删除成功")
+    else:
+        return common.response_failed("请求方法错误!")
 
 @login_required
 def task_result(request):

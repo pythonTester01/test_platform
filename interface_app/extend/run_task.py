@@ -38,13 +38,15 @@ class InterfaceTest(unittest.TestCase):
         if req_methed == "get":
             if req_type == "from":
                 r = requests.get(url, headers=req_header, params=req_para)
-
+                self.assertIn(response_assert,r.text)
 
         if req_methed == "post":
             if req_type == "from":
                 r = requests.post(url, data=req_para)
+                self.assertIn(response_assert, r.text)
             elif req_type == "json":
                 r = requests.post(url, json=req_para)
+                self.assertIn(response_assert, r.text)
 
 # 运行测试用例
 def run_cases():
