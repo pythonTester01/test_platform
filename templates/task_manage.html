@@ -75,7 +75,7 @@
                             {% endif %}
                             <td class="center">{{ data.create_time | date:"Y-m-d H:i:s" }}</td>
                             <td class="center" style="width: 60px;">
-                                <a href="/interface/run_task/{{data.id}}"><i class="icon-play"></i></a>
+                                <a href="#" onclick="Run_Task('{{data.id}}')"><i class="icon-play"></i></a>
                                 &nbsp;&nbsp;&nbsp;
                                 <a href="/interface/task_result_list/{{data.id}}"><i class="icon-list-alt"></i></a>
                                 &nbsp;&nbsp;&nbsp;
@@ -144,12 +144,24 @@
 <script src="/static/mycase.js"></script>
 <script src="/static/vendors/jquery-1.9.1.js"></script>
 <script>
+    function Run_Task(id) {
+      $.ajax({
+          type: 'POST',
+          url: '/interface/run_task/',
+          data: {"id": id},
 
+          success: function (data) {
+              if (data.success == "true") {
+                  alert(data.message);
+                  window.location.reload();
+              }else {
+                  alert(data.message);
+              }
+          },
+      });
 
-
-
+  }
     function del_id(id) {
-
       $.ajax({
           type: 'POST',
           url: '/interface/delete_task/',
@@ -167,5 +179,5 @@
       });
 
   }
-        </script>
+</script>
 {% endblock context %}

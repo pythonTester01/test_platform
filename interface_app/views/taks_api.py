@@ -1,14 +1,8 @@
-import json
-import requests
-from django.shortcuts import render
+from interface_app.extend.task_thread import TaskThread
 from django.http import HttpResponse, JsonResponse,HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 
 from interface_app.models import TestTask,TestResult
-from project_app.models import Project,Model
-
-
-from common.page_help import page
 from test_platform import common
 # Create your views here.
 
@@ -50,3 +44,26 @@ def task_result(request):
         return common.response_succeed(message="获取数据成功！",data=data)
     else:
         return common.response_failed(message="请求方法错误！")
+
+@login_required
+def run_task(request):
+    '''运行任务i'''
+    if request.method =="POST":
+        id = request.POST.get("id","")
+
+        if id =="":
+            return common.response_failed("任务id不能为空")
+
+        task_obj = TestTask.objects.all()
+        runing_task = 0
+        for i in task_obj:
+            if i.status == 1:
+                runing_task = 1
+                break
+        if runing_task == 1:
+            return common.response_failed("当前有任务正在执行...")
+        else:
+            TaskThread(id).run_new()
+            return common.response_succeed(message="已执行")
+    else:
+        return common.response_failed("请求方法错误")

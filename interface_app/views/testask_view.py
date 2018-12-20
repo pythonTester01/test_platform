@@ -47,14 +47,14 @@ def add_task(request):
         return HttpResponse("404")
 
 # 运行任务
-@login_required
-def run_task(request,tid):
-
-    if request.method == "GET":
-       TaskThread(tid).run_new()
-       return HttpResponseRedirect("/interface/task_manage/")
-    else:
-        return HttpResponse("404")
+# @login_required
+# def run_task(request,tid):
+#
+#     if request.method == "GET":
+#        TaskThread(tid).run_new()
+#        return HttpResponseRedirect("/interface/task_manage/")
+#     else:
+#         return HttpResponse("404")
 
 #查看任务列表
 @login_required

@@ -36,7 +36,7 @@ urlpatterns = [
      #测试任务
      path("task_manage/", testask_view.task_manage),
      path("add_task/", testask_view.add_task),
-     path("run_task/<int:tid>", testask_view.run_task),
+     #path("run_task/<int:tid>", testask_view.run_task),
      path("task_result_list/<int:tid>", testask_view.task_result_list),
 
 
@@ -46,5 +46,6 @@ urlpatterns = [
      path("delete_task/", taks_api.delete_task),
      path("save_task_data/", taks_api.save_task_data),
      path("task_result/", taks_api.task_result),
+     path("run_task/", taks_api.run_task),
 
 ]
